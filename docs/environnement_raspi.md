@@ -65,6 +65,13 @@ Le paramètre interrupt correspond au PIN sur la Raspberry qui gère l'interrupt
 En faisant `ip a`, vous devriez voir l'interface can0 'UP'.
 Le bitrate correspond au débit du bus CAN, ici 125kB/s
 
+5. Déboguer l'interface CAN
+
+Regarder si le module est bien chargé: `lsmod | grep can`
+`sudo dmesg | grep can` ou `sudo dmesg | grep mcp`
+
+Si vous avez l'erreur `mcp251x spi0.0: Cannot initialize MCP2515. Error=110`. Alors il y a un problème électronique.
+
 ### Démarrage automatique de l'interface CAN
 
 Source: https://askubuntu.com/questions/1337826/18-04-server-with-can-bus-and-netplan-configuration
