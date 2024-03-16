@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'can_rx = can_robot.can_rx:main'
+            'can_rx = can_robot.can_rx:main',
+            'can_raw_rx = can_robot.can_raw_rx:main',
         ],
     },
 )
