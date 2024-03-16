@@ -2,12 +2,35 @@
 
 Ce paquet est utilisé pour la communication CAN avec le robot. 
 
+## Table des matières (manuelle)
+
+- [Installation](#installation)
+  - [Prérequis](#prérequis)
+  - [Configuration de l'interface CAN](#configuration-de-linterface-can)
+- [Architecture](#architecture)
+- [Liste des messages](#liste-des-messages)
+  - [`CanRaw.msg`](#canrawmsg)
+- [Utilisation](#utilisation)
+  - [Noeud `can_raw_rx`](#noeud-can_raw_rx)
+    - [Lancement](#lancement)
+    - [Protocole de test](#protocole-de-test)
+  - [Noeud `can_rx_decoder` (en cours de développement)](#noeud-can_rx_decoder-en-cours-de-développement)
+  - [Noeud `can_raw_tx` (TODO)](#noeud-can_raw_tx-todo)
+  - [Noeud `can_tx_decoder` (TODO)](#noeud-can_tx_decoder-todo)
+- [Format des messages CAN](#format-des-messages-can)
+  - [Base roulante](#base-roulante)
+  - [Bras](#bras)
+  - [Stockage](#stockage)
+  - [Urgence](#urgence)
+  - [Raspi](#raspi)
+- [Auteurs](#auteurs)
+
 ## Installation
 
 ### Prérequis
 
 - Avoir un environnement de développement ROS2 (voir [ROS2 dev environment](https://clubrobotinsat.github.io/doc/informatique/mise_en_place/ros2_dev_container_setup.html))
-- Avoir une Raspberry Pi connectée au robot (voir [environnement Raspberry](docs/environnement_raspi.md))
+- Avoir une Raspberry Pi connectée au robot (voir [environnement Raspberry](../../docs/environnement_raspi.md))
 - Avoir des connaissances en Python
 - Avoir des connaissances en ROS2
 - Avoir des connaissances en communication CAN
