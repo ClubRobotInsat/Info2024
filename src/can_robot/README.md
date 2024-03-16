@@ -2,12 +2,35 @@
 
 Ce paquet est utilisé pour la communication CAN avec le robot. 
 
+## Table des matières (manuelle)
+
+- [Installation](#installation)
+  - [Prérequis](#prérequis)
+  - [Configuration de l'interface CAN](#configuration-de-linterface-can)
+- [Architecture](#architecture)
+- [Liste des messages](#liste-des-messages)
+  - [`CanRaw.msg`](#canrawmsg)
+- [Utilisation](#utilisation)
+  - [Noeud `can_raw_rx`](#noeud-can_raw_rx)
+    - [Lancement](#lancement)
+    - [Protocole de test](#protocole-de-test)
+  - [Noeud `can_rx_decoder` (en cours de développement)](#noeud-can_rx_decoder-en-cours-de-développement)
+  - [Noeud `can_raw_tx` (TODO)](#noeud-can_raw_tx-todo)
+  - [Noeud `can_tx_decoder` (TODO)](#noeud-can_tx_decoder-todo)
+- [Format des messages CAN](#format-des-messages-can)
+  - [Base roulante](#base-roulante)
+  - [Bras](#bras)
+  - [Stockage](#stockage)
+  - [Urgence](#urgence)
+  - [Raspi](#raspi)
+- [Auteurs](#auteurs)
+
 ## Installation
 
 ### Prérequis
 
 - Avoir un environnement de développement ROS2 (voir [ROS2 dev environment](https://clubrobotinsat.github.io/doc/informatique/mise_en_place/ros2_dev_container_setup.html))
-- Avoir une Raspberry Pi connectée au robot (voir [environnement Raspberry](docs/environnement_raspi.md))
+- Avoir une Raspberry Pi connectée au robot (voir [environnement Raspberry](../../docs/environnement_raspi.md))
 - Avoir des connaissances en Python
 - Avoir des connaissances en ROS2
 - Avoir des connaissances en communication CAN
@@ -25,12 +48,86 @@ pip install python-can # Pour la communication CAN en Python
 
 /!\ Il est important de configurer l'interface CAN sur la Raspberry Pi pour pouvoir communiquer avec le robot. /!\
 
-Suivre les étapes suivantes pour configurer l'interface CAN sur la Raspberry Pi: [environnement Raspberry](../docs/environnement_raspi.md#set-up-can-interface)
+Suivre les étapes suivantes pour configurer l'interface CAN sur la Raspberry Pi: [environnement Raspberry](../../docs/environnement_raspi.md#set-up-can-interface)
+
+
+## Architecture
+
+Il y a 4 noeuds dans ce paquet:
+- `can_raw_rx`: Noeud qui reçoit les messages CAN bruts et les publie sur un topic
+- `can_rx_decoder`: Noeud qui reçoit les messages CAN et les interprète
+- `can_raw_tx`: Noeud qui envoie les messages CAN bruts
+- `can_tx_decoder`: Noeud qui envoie les messages CAN interprétés
+
+Il y a plusieurs topics dans ce paquet:
+- `/can_raw_rx`: Topic pour les messages CAN bruts reçus
+- `/can_raw_tx`: Topic pour les messages CAN bruts à envoyer
+- TODO: Ajouter les topics pour les messages interprétés
+
+Il y a une interface de communication CAN pour ce paquet:
+- `can_interface`: Interface pour la communication CAN
+
+## Liste des messages
+
+### `CanRaw.msg`
+```txt
+int32 arbitration_id
+uint8[8] data
+uint8 err_flag
+uint8 rtr_flag
+uint8 eff_flag
+
+## CanRaw.msg
+# @brief A message containing raw CAN data.
+# @param arbitration_id The CAN ID of the message
+# @param data The raw data of the message
+# @param err_flag The error flag of the message (0 = data frame, 1 = error message)
+# @param rtr_flag The RTR flag of the message (0 = data frame, 1 = remote frame)
+# @param eff_flag The EFF flag of the message (0 = standard frame 11 bits, 1 = extended frame 29 bits)
+```
+
+##  Utilisation
+
+### Noeud `can_raw_rx`
+
+#### Lancement
+Pour lancer `can_raw_rx`, exécuter la commande suivante:
+
+```bash
+ros2 run can_robot can_raw_rx
+```
+
+Ne pas oublier les étapes suivantes:
+- Configurer l'interface CAN sur la Raspberry Pi (voir [environnement Raspberry](../../docs/environnement_raspi.md#set-up-can-interface))
+- Setup ROS2 environment 
+- Compiler avec `colcon build --packages-select can_robot` (dans le workspace)
+- Source le workspace avec `source install/setup.bash` (dans le workspace)
+- Lancer le noeud avec `ros2 run can_robot can_raw_rx`
+
+#### Protocole de test
+
+1. Lancer le noeud `can_raw_rx` avec la commande `ros2 run can_robot can_raw_rx`
+2. Ecouter le topic `can_raw_rx` avec la commande `ros2 topic echo /can_raw_rx`
+3. Envoyer un message CAN avec la commande `cansend can0 013#02.01.60.00.00.00.00.00`
+4. Vérifier que le message est bien reçu par le noeud `can_raw_rx` 
+5. Vérifier que le message est bien affiché dans le terminal où le topic est écouté
+
+### Noeud `can_rx_decoder` (en cours de développement)
+
+Pour lancer le noeud de réception, exécuter la commande suivante:
+
+```bash
+ros2 run can_robot can_rx
+```
+
+### Noeud `can_raw_tx` (TODO)
+
+### Noeud `can_tx_decoder` (TODO)
 
 
 ## Format des messages CAN
 
-:warning: Les messages CAN sont envoyés en utilisant le format standard 11bits. /!\ 
+:warning: Les messages CAN sont envoyés en utilisant le format standard 11bits. /!\
 
 /!\ Il faut s'assurer que le même format est utilisé dans les STM32. /!\
 
@@ -123,22 +220,6 @@ La structure des messages CAN est définie de cette manière:
 ### Raspi
 En fonction des interfaces de chacun => peut interpréter les messages correctement.
 
+## Auteurs
 
-
-## Utilisation
-
-### Lancer le noeud de réception (en développement)
-
-Pour lancer le noeud de réception, exécuter la commande suivante:
-
-```bash
-ros2 run can_robot can_rx
-```
-
-### Lancer le noeud d'envoi (pas encore développé)
-
-Pour lancer le noeud d'envoi, exécuter la commande suivante:
-
-```bash
-ros2 run can_robot can_tx
-```
+- [Ronan Bonnet](https://github.com/BloodFutur)
