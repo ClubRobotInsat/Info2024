@@ -5,6 +5,10 @@ import rclpy
 from rclpy.node import Node
 import can
 
+from sensor_msgs.msg import Imu, JointState, Range
+from can_interface.msg import ArmFeedback, MotorsFeedback
+
+
 
 
 ##########################################################################################
@@ -26,7 +30,10 @@ class CanRx(Node):
                       receive_own_messages=True)
 
         notifier = can.Notifier(self.bus, [self.on_message])
-        # self.can_rx_publisher = self.create_publisher(CanRx, 'can_rx', 10)
+        self.imu_data_publisher = self.create_publisher(Imu, 'imu_data', 10)
+        self.motors_feedback = self.create_publisher(JointState, 'joint_state', 10)
+        self.arm_feedback_publisher = self.create_publisher(ArmFeedback, 'arm_feedback', 10)
+        self.ultrasound_publisher = self.create_publisher(Range, 'range', 10)
         # self.can_rx_service = self.create_service(CanRx, 'can_rx', self.send_message)
 
         # Create a publisher for motorsFeedback
@@ -66,6 +73,47 @@ class CanRx(Node):
         2. Extract data
         3. Publish data to the appropriate topic
         """
+        (prio, id_dest, id_or) = decomposer_en_tete(self.arbitration_id)
+        data = self.data
+
+        match id_or:
+            case 1:
+                #msg comes from raspi -> loopback?
+                pass
+            case 2:
+                #msg comes from herkulex, data is published in ArmFeedback topic
+                #prepare message and convert data into usable units
+
+                arm_msg = ArmFeedback()
+                #arm_msg.id = data[0]
+                #arm_msg.plier_open =
+                #arm_msg.position =
+                #arm_msg.speed =
+                #arm_msg.err_flag =
+                #arm_msg.rtr_flag =
+                #arm_msg.eff_flag =
+                self.arm_feedback_publisher.publish(arm_msg)
+            case 3:
+                # msg comes from motors, data is published in MotorsFeedback topic
+                motors_msg = JointState()
+                match data[0]:
+                    case 0:
+                        motors_msg.name = "front"
+                    case 1:
+                        motors_msg.name = "back"
+                    case 2:
+                        motors_msg.name = "left"
+                    case 1:
+                        motors_msg.name = "right"
+                motors_msg.position = ()
+                motors_msg.velocity = ()
+                motors_msg.effort = 0
+                self.motors_feedback_publisher.publish(motors_msg)
+                pass
+            case _:
+                #self.can_rx_publisher.publish(self)
+                pass
+
         pass
 
     def close_communication(self):
