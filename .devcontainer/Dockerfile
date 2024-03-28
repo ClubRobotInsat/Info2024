@@ -14,8 +14,12 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 RUN echo $USERNAME:$USERNAME | chpasswd
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get update && apt-get install -y python3-pip openssh-server net-tools nano vim apt-utils ufw iputils-ping software-properties-common ros-humble-rqt*
+RUN apt-get update && apt-get install -y python3-pip openssh-server net-tools nano vim apt-utils ufw iputils-ping software-properties-common ros-humble-rqt* ros-humble-rviz2
 RUN apt-get update && apt-get install -y ros-humble-turtlesim ros-humble-rosbridge-suite
+RUN pip install setuptools==58.2.0 && pip install python-can # python-can is a package for CAN communication
+RUN sudo od /dev/ttyACM0 # This command is to check if the device is connected to the container
+RUN sudo adduser $USER dialout # Add the user to the dialout group to access the serial port
+
 ENV SHELL /bin/bash
 
 # ********************************************************

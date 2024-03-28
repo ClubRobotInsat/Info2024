@@ -31,7 +31,8 @@
     "-p3000:3000",
     "-p2222:22",
     "-p9090:9090",
-    "-e", "DISPLAY=${env:DISPLAY}"
+    "-e", "DISPLAY=${env:DISPLAY}",
+    "--device=/dev/ttyUSB0"
   ],
   "mounts": [
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",

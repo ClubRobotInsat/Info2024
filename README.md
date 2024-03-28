@@ -40,6 +40,7 @@ TODO: Ajouter un schéma de l'architecture du robot
 - [ ] Etat du robot
 - [ ] Évitement d'obstacles
 - [ ] Vision
+- [x] Lidar (Voir [lidar/README.md](docs/lidar.md) et [lidar/urg_node2/README.md](src/urg_node2/README.md))
 - [ ] Intelligence artificielle & Stratégie
 
 
