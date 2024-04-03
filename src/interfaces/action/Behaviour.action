@@ -1,0 +1,8 @@
+# Goal message
+string goal
+---
+# Result message ( 0 => OK, != 0 => KO )
+int32 result
+---
+# Feedback message ( 0 => OK/working, 1 => waiting/paused )
+int32 feedback
