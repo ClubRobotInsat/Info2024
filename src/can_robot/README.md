@@ -16,7 +16,7 @@ Ce paquet est utilisé pour la communication CAN avec le robot.
     - [Protocole de test](#protocole-de-test)
   - [Noeud `can_rx_decoder` (en cours de développement)](#noeud-can_rx_decoder-en-cours-de-développement)
   - [Noeud `can_raw_tx` (TODO)](#noeud-can_raw_tx-todo)
-  - [Noeud `can_tx_decoder` (TODO)](#noeud-can_tx_decoder-todo)
+  - [Noeud `can_tx_encoder` (TODO)](#noeud-can_tx_encoder-todo)
 - [Format des messages CAN](#format-des-messages-can)
   - [Base roulante](#base-roulante)
   - [Bras](#bras)
@@ -57,7 +57,7 @@ Il y a 4 noeuds dans ce paquet:
 - `can_raw_rx`: Noeud qui reçoit les messages CAN bruts et les publie sur un topic
 - `can_rx_decoder`: Noeud qui reçoit les messages CAN et les interprète
 - `can_raw_tx`: Noeud qui envoie les messages CAN bruts
-- `can_tx_decoder`: Noeud qui envoie les messages CAN interprétés
+- `can_tx_encoder`: Noeud qui reçoit des commandes et les transforme en message CAN brut
 
 Il y a plusieurs topics dans ce paquet:
 - `/can_raw_rx`: Topic pour les messages CAN bruts reçus
@@ -120,10 +120,31 @@ Pour lancer le noeud de réception, exécuter la commande suivante:
 ros2 run can_robot can_rx
 ```
 
-### Noeud `can_raw_tx` (TODO)
+### Noeud `can_raw_tx` 
 
-### Noeud `can_tx_decoder` (TODO)
+#### Lancement
 
+#### Protocole de test 
+
+1. Lancer le noeud `can_raw_tx` avec la commande `ros2 run can_robot can_raw_tx`
+2. ???
+
+#### Astuces
+
+Pour tester un node, on peut par exemple, lancer ce node, puis faire `ctrl+z` + `bg` pour faire tourner le processus en arrière plan. Ensuite, il est possible de publier une donnée directement sur le terminal, en utilisant une commande comme la suivante : 
+`ros2 topic pub </nom_du_topic> <nom de l'interface message> <données à publier sur le topic>`
+Le données doivent être sous format YAML. Prenez exemple sur la commande suivante : `ros2 topic pub /can_raw_tx can_raw_interfaces/msg/CanRaw '{arbitration_id: 0,data: [0,0,0,0,0,0,0,0], err_flag: 0, rtr_flag: 0, eff_flag: 0}'`
+
+### Noeud `can_tx_encoder`
+
+#### Lancement
+
+#### Protocole de test
+
+1. Lancer le noeud `can_tx_encoder` avec la commande `ros2 run can_robot can_tx_encoder`
+2. Ecouter le topic `<Nom du topic sur lequel can_raw_tx envoie les trames CAN>` avec la commande `ros2 topic echo <Nom du topic sur lequel can_raw_tx envoie les trames CAN>` 
+3. Lancer un script de test qui envoie un ensemble de messages corrects et de messages erronés
+4. Vérifier que les messages en sortie de can_tx_encoder correspondent aux messages envoyés sur les topics en entrée (Il y en a 4, /storage_cmd, /arm_cmd, /motor_cmd, /sensor_cmd), et que les messages erronés n'ont pas été convertis en trame CAN.
 
 ## Format des messages CAN
 
@@ -208,6 +229,14 @@ La structure des messages CAN est définie de cette manière:
 |      6      |  idServo  |            | getSpeed(idServo)           |
 |      7      |  idServo  |   speed    | getSpeedACK(idServo, speed) |
 
+### Capteurs
+
+| ID commande | 1st param | Opt params | Description                 |
+|:-----------:|:---------:|:----------:|:----------------------------|
+|      0      |           |            | stop()                      |
+|      1      |           |            | ping                        |
+
+
 => Améliorer pour avoir un truc du style:
 - tourner chaine de "tant"
 - sensChaine
@@ -223,3 +252,4 @@ En fonction des interfaces de chacun => peut interpréter les messages correctem
 ## Auteurs
 
 - [Ronan Bonnet](https://github.com/BloodFutur)
+- [Liam Chrisment](https://github.com/LiamKaist)
