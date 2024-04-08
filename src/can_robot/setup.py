@@ -22,7 +22,8 @@ setup(
         'console_scripts': [
             'can_rx = can_robot.can_rx:main',
             'can_raw_rx = can_robot.can_raw_rx:main',
-            'can_raw_tx = can_robot.can_raw_tx:main'
+            'can_raw_tx = can_robot.can_raw_tx:main',
+            'can_tx = can_robot.can_tx:main'
         ],
     },
 )

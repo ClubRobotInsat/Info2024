@@ -127,7 +127,9 @@ ros2 run can_robot can_rx
 #### Protocole de test 
 
 1. Lancer le noeud `can_raw_tx` avec la commande `ros2 run can_robot can_raw_tx`
-2. ???
+2. Lancer sur un autre terminal ou en arrière plan `candump can0`
+3. Lancer sur un autre terminal ou en arrière plan `ros2 topic pub -r 1 /can_raw_tx can_raw_interfaces/msg/CanRaw '{arbitration_id: 19,data: [2,1,96,0,0,0,0,0], err_flag: 0, rtr_flag: 0, eff_flag: 0}'` pour envoyer des données sur le topic /can_raw_tx
+4. candump devrait afficher les données captées sur le bus CAN
 
 #### Astuces
 
