@@ -5,9 +5,9 @@ import rclpy
 from rclpy.node import Node
 import can
 
-from can_raw_interfaces.msg import CanRaw
+from can_raw_interfaces.msg import CanRaw,ServoCmd,MotorCmd,SensorCmd
 
-commands={"storage_cmd":1, "arm_cmd":2, "motor_cmd":3,"sensor_cmd": 4}
+commands={"servo_cmd":1, "motor_cmd":2,"sensor_cmd": 3}
 
 class CanTx(Node):
     
@@ -16,15 +16,14 @@ class CanTx(Node):
         super().__init__('can_tx')
         
         #Set up topics to subscribe to
-        self.storage_cmd_subscriber = self.create_subscription(CanRaw, 'storage_cmd',self.on_cmd, 10)
-        self.arm_cmd_subscriber = self.create_subscription(CanRaw,'arm_cmd',self.on_cmd,10)
-        self.motor_cmd_subscriber = self.create_subscription(CanRaw,'motor_cmd',self.on_cmd,10)
-        self.sensor_cmd_subscriber = self.create_subscription(CanRaw,'sensor_cmd',self.on_cmd,10)
+        self.servo_cmd_subscriber = self.create_subscription(ServoCmd, 'servo_cmd',self.on_servo_cmd, 10)
+        self.motor_cmd_subscriber = self.create_subscription(MotorCmd,'motor_cmd',self.on_motor_cmd,10)
+        self.sensor_cmd_subscriber = self.create_subscription(SensorCmd,'sensor_cmd',self.on_sensor_cmd,10)
         
         #Set up topic to publish to
         self.can_raw_tx_publisher = self.create_publisher(CanRaw, 'can_raw_tx', 10)
         
-    def on_cmd(self,msg):
+    def on_sensor_cmd(self,msg):
         """ Upon receiving a command, this Callback is called """
         self.get_logger().info('I heard: "%s"' % msg.data)
         #Check data in the command and identify which type of command it is
@@ -34,6 +33,15 @@ class CanTx(Node):
         #Construct the CanRaw Message 
         
         #Publish the CanRaw Message
+    
+    def on_motor_cmd(self,msg):
+        """ Upon receiving a motor command, this Callback is called """
+        self.get_logger().info('Motor command incoming')
+        
+    def on_servo_cmd(self,msg):
+        """ Upon receiving a servo command, this Callback is called """
+        self.get_logger().info('I heard: "%s"' % msg.angle)
+        
     
 
 def main(args=None):

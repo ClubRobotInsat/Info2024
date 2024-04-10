@@ -14,6 +14,9 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
       "msg/CanRaw.msg"
+      "msg/ServoCmd.msg"
+      "msg/MotorCmd.msg"
+      "msg/SensorCmd.msg"
 )
 
 # uncomment the following section in order to fill in
