@@ -1,7 +1,7 @@
 uint8 command_id
 uint8 motor_id
 uint8 direction
-float32 speed 
+uint32 speed 
 uint8 extra
 
 ## MotorCmd.msg
