@@ -32,7 +32,7 @@ TODO: Ajouter un schéma de l'architecture du robot
 
 - [x] can_robot: Paquet ROS2 pour la communication CAN avec le robot. (Voir [can_robot/README.md](src/can_robot/README.md))
 - [ ] Simulation
-- [ ] Téléopération
+- [x] Téléopération (Voir [teleop/README.md](src/teleop_twist_keyboard/README.md)
 - [ ] Navigation du robot
 - [ ] Déplacement du bras
 - [ ] Localisation
