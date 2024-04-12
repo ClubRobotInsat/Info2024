@@ -1,6 +1,7 @@
 uint8 command_id
 uint8 servo_id
-float32 angle
+uint32 angle
+uint32 speed
 uint8 mode
 uint8 torque
 uint16 duration
@@ -10,5 +11,6 @@ uint16 duration
 # @param command id 
 # @param servo_id The ID of the servo
 # @param angle The servo's angle
+# @param speed The servo's rotation speed [Units?]
 # @param mode sets the servo's mode (0 for Position Control, 1 for Speed Control)
 # @param torque sets the servo's torque parameter to a value between 0 and 2
