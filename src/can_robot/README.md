@@ -137,16 +137,17 @@ Pour tester un node, on peut par exemple, lancer ce node, puis faire `ctrl+z` + 
 `ros2 topic pub </nom_du_topic> <nom de l'interface message> <données à publier sur le topic>`
 Le données doivent être sous format YAML. Prenez exemple sur la commande suivante : `ros2 topic pub /can_raw_tx can_raw_interfaces/msg/CanRaw '{arbitration_id: 0,data: [0,0,0,0,0,0,0,0], err_flag: 0, rtr_flag: 0, eff_flag: 0}'`
 
-### Noeud `can_tx_encoder`
+### Noeud `can_tx`
 
 #### Lancement
 
 #### Protocole de test
 
-1. Lancer le noeud `can_tx_encoder` avec la commande `ros2 run can_robot can_tx_encoder`
+1. Lancer le noeud `can_tx` avec la commande `ros2 run can_robot can_tx`
 2. Ecouter le topic `<Nom du topic sur lequel can_raw_tx envoie les trames CAN>` avec la commande `ros2 topic echo <Nom du topic sur lequel can_raw_tx envoie les trames CAN>` 
 3. Lancer un script de test qui envoie un ensemble de messages corrects et de messages erronés
-4. Vérifier que les messages en sortie de can_tx_encoder correspondent aux messages envoyés sur les topics en entrée (Il y en a 4, /storage_cmd, /arm_cmd, /motor_cmd, /sensor_cmd), et que les messages erronés n'ont pas été convertis en trame CAN.
+4. Vérifier que les messages en sortie de can_tx correspondent aux messages envoyés sur les topics en entrée (Il y en a 4, /storage_cmd, /arm_cmd, /motor_cmd, /sensor_cmd), et que les messages erronés n'ont pas été convertis en trame CAN.
+5. Un script de test est en train d'être élaboré, il se nomme test_can_tx.sh [Où le mettre de préférence]
 
 ## Format des messages CAN
 
