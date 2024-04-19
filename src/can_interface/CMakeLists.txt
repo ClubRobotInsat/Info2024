@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(can_raw_interfaces)
+project(can_interface)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,10 +11,15 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 
+set(msg_files
+        "msg/CanRaw.msg"
+        "msg/ArmFeedback.msg"
+)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-      "msg/CanRaw.msg"
+      ${msg_files}
 )
+
 
 # uncomment the following section in order to fill in
 # further dependencies manually.

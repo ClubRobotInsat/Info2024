@@ -6,13 +6,13 @@ from rclpy.node import Node
 import can
 
 from sensor_msgs.msg import Imu, JointState, Range
-from can_interface.msg import ArmFeedback, MotorsFeedback
+from can_interface.msg import ArmFeedback, CanRaw
 
 
 
 
 ##########################################################################################
-tab_ids={"raspi":1, "herkulex":2, "base roulante":3}
+tab_ids={"raspi":1, "herkulex":2, "base_roulante":3}
 reversed_tab_ids=dict((v,k) for (k,v) in tab_ids.items())
 
 # l'en tête est un int
@@ -25,102 +25,113 @@ class CanRx(Node):
         super().__init__('can_rx')
         # Subscribe to all data on the can_robot bus
 
-        self.bus = can.interface.Bus(interface='socketcan',
-                      channel='can0',
-                      receive_own_messages=True)
+        #self.bus = can.interface.Bus(interface='socketcan',
+        #              channel='can0',
+        #              receive_own_messages=True)
 
-        notifier = can.Notifier(self.bus, [self.on_message])
+        #notifier = can.Notifier(self.bus, [self.on_message])
+        self.canraw_subscriber = self.create_subscription(CanRaw, 'can_raw_rx', self.receive_data, 10)
         self.imu_data_publisher = self.create_publisher(Imu, 'imu_data', 10)
-        self.motors_feedback = self.create_publisher(JointState, 'joint_state', 10)
+        self.motors_feedback_publisher = self.create_publisher(JointState, 'joint_state', 10)
         self.arm_feedback_publisher = self.create_publisher(ArmFeedback, 'arm_feedback', 10)
         self.ultrasound_publisher = self.create_publisher(Range, 'range', 10)
-        # self.can_rx_service = self.create_service(CanRx, 'can_rx', self.send_message)
 
-        # Create a publisher for motorsFeedback
-        # self.motors_feedback_publisher = self.create_publisher(MotorsFeedback, 'motors_feedback', 10)
 
-    def send_message(self, request, response):
-        """
-        Send a message to the can_robot bus
-        """
-        # Create a message
-        msg = can.Message(arbitration_id=0x123, data=[0, 25, 0, 1, 3, 1, 4, 1], is_extended_id=False)
-        # Send the message
-        self.bus.send(msg)
-        # Return the response
-        response.success = True
-        return response
-
-    def on_message(self, msg):
-        """
-        Callback function for the can_robot bus
-        """
-        (prio, id_dest, id_or) = decomposer_en_tete(msg.arbitration_id)
-        print("message reçu de " + reversed_tab_ids[id_or] + " : " + msg.data.decode() + " à destination de " + reversed_tab_ids[id_dest])
-        # Publish the message to the appropriate topic
-        # self.can_rx_publisher.publish(msg)
-        self.get_logger().info('Received message: {0}'.format(msg))
-    def init_communication(self):
-        """
-        Initialize the communication with the can_robot bus
-        """
-        pass
-
-    def receive_data(self):
+    def receive_data(self, msg):
         """
         Receive data from the can_robot bus
         1. Check IDs
         2. Extract data
         3. Publish data to the appropriate topic
         """
-        (prio, id_dest, id_or) = decomposer_en_tete(self.arbitration_id)
-        data = self.data
+        (prio, id_dest, id_or) = decomposer_en_tete(msg.arbitration_id)
+        source_id = reversed_tab_ids.get(id_or)
+        data = msg.data
 
-        match id_or:
-            case 1:
-                #msg comes from raspi -> loopback?
-                pass
-            case 2:
-                #msg comes from herkulex, data is published in ArmFeedback topic
-                #prepare message and convert data into usable units
+        if msg.err_flag:
+            self.get_logger().error("CAN MSG ERROR")
+            self.get_logger().error("{0}".format(msg))
 
-                arm_msg = ArmFeedback()
-                #arm_msg.id = data[0]
-                #arm_msg.plier_open =
-                #arm_msg.position =
-                #arm_msg.speed =
-                #arm_msg.err_flag =
-                #arm_msg.rtr_flag =
-                #arm_msg.eff_flag =
-                self.arm_feedback_publisher.publish(arm_msg)
-            case 3:
-                # msg comes from motors, data is published in MotorsFeedback topic
-                motors_msg = JointState()
-                match data[0]:
-                    case 0:
-                        motors_msg.name = "front"
-                    case 1:
-                        motors_msg.name = "back"
-                    case 2:
-                        motors_msg.name = "left"
-                    case 1:
-                        motors_msg.name = "right"
-                motors_msg.position = ()
-                motors_msg.velocity = ()
-                motors_msg.effort = 0
-                self.motors_feedback_publisher.publish(motors_msg)
-                pass
-            case _:
-                #self.can_rx_publisher.publish(self)
-                pass
+        else:
+            self.get_logger().info("Received Dataframe:")
+            self.get_logger().info("{0}".format(msg))
 
-        pass
+            match source_id:
+                case "raspi":
+                    #msg comes from raspi -> loopback?
+                    pass
+                case "herkulex":
+                    #msg comes from herkulex, data is published in ArmFeedback topic
+                    arm_msg = ArmFeedback()
+                    arm_msg.name = []
+                    arm_msg.position = []
+                    arm_msg.speed = []
 
-    def close_communication(self):
-        """
-        Close the communication with the can_robot bus
-        """
-        pass
+                    arm_instr_id_tab={"stop":0,"ping":1, "setAngle":2, "getAngle":3, "getAngleACK":4, "setSpeed":5, "getSpeed":6, "getSpeedACK":7,
+                                      "setSpinDuration":8, "changeMode":9, "getMode":10, "setTorque":11, "getTorque":12, "reboot":13,
+                                      "clearError":14, "getError":15, "getStatusDetail":16, "grab":17, "release":18}
+                    arm_instr_dict=dict((v,k) for (k,v) in arm_instr_id_tab.items())
+                    # identify instruction
+                    arm_instruction=arm_instr_dict.get(data[0])
+                    match arm_instruction:
+                        case "getAngle":
+                            arm_msg.name.append(str(data[1]))
+                            arm_msg.position.append(data[2])
+                        case "getAngleACK":
+                            if data[3]:
+                                arm_msg.name.append(str(data[1]))
+                                arm_msg.position.append(data[2])
+                        case "getSpeed":
+                            arm_msg.name.append(str(data[1]))
+                            arm_msg.speed.append(data[2])
+                        case "getSpeedACK": #TODO: convert in rad/s
+                            if data[3]:
+                                arm_msg.name.append(str(data[1]))
+                                arm_msg.speed.append(data[2])
+                        case _:
+                            pass
+                    pass
+                    #arm_msg.plier_open = #TODO update instruction list for plier instructions
+                    self.arm_feedback_publisher.publish(arm_msg)
+                    #display message sent to subscribers
+                    self.get_logger().info('Sent message: {0}'.format(arm_msg))
+
+                case "base_roulante":
+                    # msg comes from motors, data is published in MotorsFeedback topic
+                    motors_msg = JointState()
+                    motors_msg.name = []
+                    motors_msg.position = []
+                    motors_msg.velocity = []
+                    motors_msg.effort = []
+
+                    motor_instr_id_tab={"stop":0,"ping":1, "setTargetSpeed":2, "getTargetSpeedACK":3, "setMotorDirection":4, "getCurrentSpeed":5, "getMotorDirection":6}
+                    motor_instr_dict=dict((v,k) for (k,v) in motor_instr_id_tab.items())
+                    # identify instruction
+                    motor_instruction = motor_instr_dict.get(data[0])
+                    match motor_instruction:
+                        case "getTargetSpeedACK":
+                            if (data[3]!=0):
+                                motors_msg.name.append(str(data[1]))
+                                motors_msg.velocity.append(data[2])
+                            else:
+                                pass
+                        case "getCurrentSpeed":
+                            motors_msg.name.append(str(data[1]))
+                            motors_msg.velocity.append(data[2])
+                        case "getMotorDirection":
+                            motors_msg.name.append(str(data[1]))
+                            motors_msg.position.append(data[2])
+                        case _:
+                            pass
+
+                    self.motors_feedback_publisher.publish(motors_msg)
+                    #display message sent to subscribers
+                    self.get_logger().info('Sent message: {0}'.format(motors_msg))
+
+                case _:
+                    pass
+
+            pass
 
 
 def main(args=None):
