@@ -1,4 +1,3 @@
-uint8 prio
 uint8 dest
 uint8 command_id
 uint8 servo_id
@@ -10,7 +9,6 @@ uint16 duration
 
 ## ServoCmd.msg
 # @brief A message containing information to control a servomotor.
-# @param prio The priority of the message
 # @param dest The id of the desired receiver
 # @param command id 
 # @param servo_id The ID of the servo

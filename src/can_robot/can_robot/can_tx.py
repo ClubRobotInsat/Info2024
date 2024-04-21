@@ -78,7 +78,8 @@ class CanTx(Node):
         self.get_logger().info('I heard: "%s"' % msg.data)
         canRawMsg = CanRaw()
         origin = 0 #[0 for raspi?]
-        header = generate_header(msg.prio,msg.dest,origin)
+        prio = 0 #[Priority mechanism to be implemented]
+        header = generate_header(prio,msg.dest,origin)
         canRawMsg.arbitration_id = header
         
         #Switch case on the type of command 
@@ -111,7 +112,8 @@ class CanTx(Node):
         # Publish the message to the appropriate topic
         canRawMsg = CanRaw()
         origin = 0 #[0 for raspi?]
-        header = generate_header(msg.prio,msg.dest,origin)
+        prio = 0 #[Priority mechanism to be implemented]
+        header = generate_header(prio,msg.dest,origin)
         canRawMsg.arbitration_id = header
         # [Code factorisation possible] [Error Handling necessary]
         try: 
@@ -157,7 +159,8 @@ class CanTx(Node):
         self.get_logger().info('I heard: "%s"' % msg.angle)
         canRawMsg = CanRaw()
         origin = 0 #[0 for raspi?]
-        header = generate_header(msg.prio,msg.dest,origin)
+        prio = 0 #[Priority mechanism to be implemented]
+        header = generate_header(prio,msg.dest,origin)
         canRawMsg.arbitration_id = header
         try: 
             match msg.command_id:

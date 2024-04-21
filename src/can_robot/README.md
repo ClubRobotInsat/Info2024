@@ -63,6 +63,7 @@ Il y a plusieurs topics dans ce paquet:
 - `/can_raw_rx`: Topic pour les messages CAN bruts reçus
 - `/can_raw_tx`: Topic pour les messages CAN bruts à envoyer
 - TODO: Ajouter les topics pour les messages interprétés
+- TODO: Ajouter un topic pour signaler qu'une erreur s'est produite dans les nodes de transmission ou reception [A valider]
 
 Il y a une interface de communication CAN pour ce paquet:
 - `can_interface`: Interface pour la communication CAN
@@ -84,6 +85,58 @@ uint8 eff_flag
 # @param err_flag The error flag of the message (0 = data frame, 1 = error message)
 # @param rtr_flag The RTR flag of the message (0 = data frame, 1 = remote frame)
 # @param eff_flag The EFF flag of the message (0 = standard frame 11 bits, 1 = extended frame 29 bits)
+```
+
+### `MotorCmd.msg`
+
+```txt
+uint8 dest
+uint8 command_id
+uint8 motor_id
+uint8 direction
+float32 speed 
+uint8 extra
+
+## MotorCmd.msg
+# @brief A message containing information to control a motor.
+# @param dest The id of the desired receiver
+# @param command_id The ID of the command 
+# @param motor_id The ID of the motor
+# @param direction Direction of the motor's rotation (0 for clockwise, 1 for counter clockwise)
+# @param speed in mm/s
+# @param extra extra byte just in case
+```
+
+### `ServoCmd.msg`
+
+```txt
+uint8 dest
+uint8 command_id
+uint8 servo_id
+float32 angle
+float32 speed
+uint8 mode
+uint8 torque
+uint16 duration
+
+## ServoCmd.msg
+# @brief A message containing information to control a servomotor.
+# @param dest The id of the desired receiver
+# @param command id 
+# @param servo_id The ID of the servo
+# @param angle The servo's angle
+# @param speed The servo's rotation speed [Units?]
+# @param mode sets the servo's mode (0 for Position Control, 1 for Speed Control)
+# @param torque sets the servo's torque parameter to a value between 0 and 2
+```
+
+### `SensorCmd.msg`
+
+```txt
+uint8 dest
+uint8 command_id
+
+#[To be determined]
 ```
 
 ##  Utilisation
