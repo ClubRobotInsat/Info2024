@@ -277,7 +277,7 @@ La structure des messages CAN est définie de cette manière:
 | ID commande | 1st param | Opt params | Description                 |
 |:-----------:|:---------:|:----------:|:----------------------------|
 |      0      |           |            | stop()                      |
-|      1      |           |            | ping                        |
+|      1      |           |            | ping()                      |
 |      2      |  idServo  |   angle    | setAngle(idServo, angle)    |
 |      3      |  idServo  |            | getAngle(idServo)           |
 |      4      |  idServo  |   angle    | getAngleACK(idServo, angle) |
@@ -290,7 +290,10 @@ La structure des messages CAN est définie de cette manière:
 | ID commande | 1st param | Opt params | Description                 |
 |:-----------:|:---------:|:----------:|:----------------------------|
 |      0      |           |            | stop()                      |
-|      1      |           |            | ping                        |
+|      1      |           |            | ping()                      |
+|      2      |   idImu   |            | get_accel(idImu)            |
+|      3      |   idImu   |            | get_ang_vel(idImu)          |
+|      4      |   idTof   |            | get_distance(idTof)         |
 
 
 => Améliorer pour avoir un truc du style:

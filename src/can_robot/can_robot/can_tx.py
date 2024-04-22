@@ -9,10 +9,6 @@ import numpy as np
 
 from can_raw_interfaces.msg import CanRaw,ServoCmd,MotorCmd,SensorCmd
 
-commands={"servo_cmd":1, "motor_cmd":2,"sensor_cmd": 3}
-tab_ids={"raspi":1, "herkulex":2, "base roulante":3}
-reversed_tab_ids=dict((v,k) for (k,v) in tab_ids.items())
-
 class MotorCommands(Enum): 
     STOP = 0
     PING = 1
@@ -42,9 +38,13 @@ class ServoCommands(Enum):
     GET_STATUS = 16
     GRAB = 17
     RELEASE = 18
+
 class SensorCommands(Enum):
     STOP = 0
-    PING = 0
+    PING = 1
+    GET_ACCEL = 2
+    GET_ANG_VEL = 3
+    GET_DISTANCE = 4
 
 
 def generate_header(prio,dest,origine):
@@ -74,8 +74,7 @@ class CanTx(Node):
         self.float_multiplier = 10
         
     def on_sensor_cmd(self,msg):
-        """ Upon receiving a command, this Callback is called """
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        """ Upon receiving a sensor command, this callback is executed """ 
         canRawMsg = CanRaw()
         origin = 0 #[0 for raspi?]
         prio = 0 #[Priority mechanism to be implemented]
@@ -91,6 +90,12 @@ class CanTx(Node):
                     canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                 case SensorCommands.PING.value: 
                     canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+                case SensorCommands.GET_ACCEL.value:
+                    canRawMsg.data = [msg.command_id,msg.imu_id,0,0,0,0,0,0]
+                case SensorCommands.GET_ANG_VEL.value:
+                    canRawMsg.data = [msg.command_id,msg.imu_id,0,0,0,0,0,0]
+                case SensorCommands.GET_DISTANCE.value:
+                    canRawMsg.data = [msg.command_id,msg.tof_id,0,0,0,0,0,0]
                 case _ :
                     #[Add an error flag for unrecognised command?]
                     pass
@@ -108,7 +113,7 @@ class CanTx(Node):
     
     def on_motor_cmd(self,msg):
         """ Upon receiving a motor command, this Callback is called """
-        self.get_logger().info('Motor command incoming')
+
         # Publish the message to the appropriate topic
         canRawMsg = CanRaw()
         origin = 0 #[0 for raspi?]
@@ -126,11 +131,11 @@ class CanTx(Node):
                     
                 case MotorCommands.SET_SPEED.value:
                     # Convert speed into adequate data type [Must be improved for float compatibility]
-                    speed = int(np.ceil(msg.speed*self.float_multiplier)) #(m/s) 
+                    speed = int(np.ceil(msg.speed*self.float_multiplier)) 
                     canRawMsg.data = [msg.command_id,msg.motor_id,((speed >> 24) & 255),((speed >> 16) & 255 ),((speed >> 8) & 255),(speed & 255),0,0]
                     
                 case MotorCommands.GET_SPEED_ACK.value:
-                    speed = int(np.ceil(msg.speed*self.float_multiplier)) #(m/s) 
+                    speed = int(np.ceil(msg.speed*self.float_multiplier))
                     canRawMsg.data = [msg.command_id,msg.motor_id,((speed >> 24) & 255),((speed >> 16) & 255 ),((speed >> 8) & 255),(speed & 255),0,0]
         
                 case MotorCommands.SET_DIR.value:
@@ -156,7 +161,7 @@ class CanTx(Node):
         
     def on_servo_cmd(self,msg):
         """ Upon receiving a servo command, this Callback is called """
-        self.get_logger().info('I heard: "%s"' % msg.angle)
+
         canRawMsg = CanRaw()
         origin = 0 #[0 for raspi?]
         prio = 0 #[Priority mechanism to be implemented]
