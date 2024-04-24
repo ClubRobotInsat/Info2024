@@ -7,7 +7,7 @@ from enum import Enum
 import can
 import numpy as np
 
-from can_raw_interfaces.msg import CanRaw,ServoCmd,MotorCmd,SensorCmd
+from can_interface.msg import CanRaw,ServoCmd,MotorCmd,SensorCmd
 
 class MotorCommands(Enum): 
     STOP = 0

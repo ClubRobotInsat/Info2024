@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import rclpy
-
+import yaml
 from rclpy.node import Node, Timer
 import can
 
-from can_raw_interfaces.msg import ServoCmd,MotorCmd,SensorCmd
+from can_interface.msg import ServoCmd,MotorCmd,SensorCmd
 
 class CanTxValidation(Node):
 
@@ -15,17 +15,33 @@ class CanTxValidation(Node):
 
         self.can_tx_validation_publisher = self.create_publisher(MotorCmd, 'motor_cmd', 10)
         
-        #[Add timer callback] 
-        
-        for i in range(10):
+        #Get test file name from the command line, in an absolute form /home/ws/src/<file name> for example
+        self.declare_parameter('file_name', rclpy.Parameter.Type.STRING)
+        string = str(self.get_parameter('file_name').value)
+        with open(string) as stream:
+            try:
+                test_data = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+
+        for elt in test_data['motor_cmd']:
             motorCmdData = MotorCmd()
-            motorCmdData.dest = 1
-            motorCmdData.command_id = 2
-            motorCmdData.motor_id = 3
-            motorCmdData.direction = i
-            motorCmdData.speed = 5.0
-            motorCmdData.extra = 6
+            print(elt[1])
+            motorCmdData.dest = elt[0]
+            motorCmdData.command_id = elt[1]
+            motorCmdData.motor_id = elt[2]
+            motorCmdData.direction = elt[3]
+            motorCmdData.speed = elt[4]
+            motorCmdData.extra = elt[5]
             self.can_tx_validation_publisher.publish(motorCmdData)
+        
+        for elt in test_data['servo_cmd']:
+            #[TODO]
+            pass
+        
+        for elt in test_data['sensor_cmd']:
+            #[TODO]
+            pass
 
 
 def main(args=None):
