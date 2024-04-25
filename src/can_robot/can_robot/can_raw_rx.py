@@ -5,7 +5,7 @@ import rclpy
 from rclpy.node import Node
 import can
 
-from can_raw_interfaces.msg import CanRaw
+from can_interface.msg import CanRaw
 
 class CanRawRx(Node):
     def __init__(self):
