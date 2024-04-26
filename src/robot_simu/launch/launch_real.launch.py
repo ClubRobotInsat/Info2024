@@ -24,6 +24,8 @@ def generate_launch_description():
         launch_arguments={'use_sim_time': 'false', 'use_ros2_control': 'true'}.items()
     )
 
+
+
     robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
 
     controller_params_file = os.path.join(robot_simu_dir, 'config', 'controllers.yaml')
@@ -33,6 +35,24 @@ def generate_launch_description():
         executable='ros2_control_node',
         parameters=[{'robot_description': robot_description},
                     controller_params_file],
+    )
+
+    can_rx = Node(
+        package='can_robot',
+        executable='can_rx',
+        output='screen'
+    )
+
+    can_tx = Node(
+        package='can_robot',
+        executable='can_tx',
+        output='screen'
+    )
+
+    can_tx_raw = Node(
+        package='can_robot',
+        executable='can_raw_tx',
+        output='screen'
     )
 
     contoller_to_can = Node(
@@ -76,6 +96,9 @@ def generate_launch_description():
     # Launch them all!
     return LaunchDescription([
         rsp,
+        # can_rx,
+        can_tx,
+        # can_tx_raw,
         contoller_to_can,
         delayed_controller_manager,
         my_robot_control,
