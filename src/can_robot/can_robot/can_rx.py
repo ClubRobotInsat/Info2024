@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rclpy
+import struct
 
 from rclpy.node import Node
 import can
@@ -112,7 +113,6 @@ class CanRx(Node):
                     motors_msg.name = []
                     motors_msg.position = []
                     motors_msg.velocity = []
-                    motors_msg.effort = []
 
                     motor_instruction = motor_instr_dict.get(data[0]) # identify instruction
                     match motor_instruction:
@@ -124,10 +124,7 @@ class CanRx(Node):
                                 pass
                         case "getCurrentSpeed":
                             motors_msg.name.append(str(data[1]))
-                            motors_msg.velocity.append(convert_speed_into_ms(data[2]))
-                        case "getMotorDirection":
-                            motors_msg.name.append(str(data[1])) #TODO check direction of motor and ???
-                            motors_msg.position.append(data[2])
+                            motors_msg.velocity.append(convert_speed_into_ms(convert_bytes_into_signedfloat(data[2], data[3], data[4], data[5])))
                         case _:
                             pass
 
@@ -180,6 +177,13 @@ class CanRx(Node):
                 case _:
                     pass
 
+
+def convert_bytes_into_signedfloat(b1, b2, b3, b4):
+    '''
+    Convert 4 bytes into a signed float value
+    '''
+    int_value = b1 | (b2 << 8) | (b3 << 16) | (b4 << 24)
+    return struct.unpack('f', struct.pack('I', int_value))[0]
 
 def convert_speed_into_ms(speed):
     '''
