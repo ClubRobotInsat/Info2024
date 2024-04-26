@@ -30,7 +30,7 @@ Then compile the workspace with `colcon`:
 
 YOU MUST BE IN THE `~/ros2_ws` DIRECTORY TO RUN THIS COMMAND.
 ```bash
-colcon build --symlink-install --packages-select can_robot robot_simu
+colcon build --symlink-install --packages-select can_robot robot_simu can_interface my_robot_control robot_description
 ```
 
 ## Running the robot

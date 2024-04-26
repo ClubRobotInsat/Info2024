@@ -96,7 +96,7 @@ def generate_launch_description():
     # Launch them all!
     return LaunchDescription([
         rsp,
-        # can_rx,
+        can_rx,
         can_tx,
         # can_tx_raw,
         contoller_to_can,
