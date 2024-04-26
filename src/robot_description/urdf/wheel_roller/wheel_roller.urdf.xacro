@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find robot_description)/urdf/wheel_roller/wheel_roller.transmission.xacro"/>
+    <xacro:include filename="$(find robot_description)/urdf/wheel_roller/wheel_roller.gazebo.xacro"/>
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <xacro:property name="wheel_roller_mass" value="0.01"/>
+    <xacro:property name="wheel_roller_radius" value="0.02"/>
+    <xacro:property name="wheel_roller_width" value="0.01"/>
+
+    <xacro:macro name="roller_v0" params="prefix parent *joint_origin *joint_axis">
+        <joint name="${prefix}_roller_joint" type="continuous">
+            <xacro:insert_block name="joint_origin"/>
+            <parent link="${parent}"/>
+            <child link="${prefix}_roller_link"/>
+            <xacro:insert_block name="joint_axis"/>
+            <joint_properties damping="0.0" friction="15000.0"/>
+        </joint>
+
+        <link name="${prefix}_roller_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://robot_description/meshes/STL/rollers/wheel_roller_v2.stl"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://robot_description/meshes/STL/rollers/wheel_roller_v2.stl"/>
+                </geometry>
+            </collision>
+            <xacro:inertial_cylinder mass="${wheel_roller_mass}" length="${wheel_roller_width}" radius="${wheel_roller_radius}">-->
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
+<!--            <inertial>-->
+<!--                <origin xyz="0.0 0.0 0.0"/>-->
+<!--                <mass value="0.009"/>-->
+<!--                <inertia ixx="0.000001257" ixy="0" ixz="0" iyy="0.000000342" iyz="0" izz="0.000001257"/>-->
+<!--            </inertial>-->
+            <surface>
+                <friction>
+                    <ode>
+                        <mu1>1.2</mu1>
+                        <mu2>1.2</mu2>
+                        <kp>1e15</kp>
+                        <kd>1e13</kd>
+                    </ode>
+                </friction>
+                <bounce>
+                    <restitution_coefficient>0.01</restitution_coefficient>
+                    <threshold>0</threshold>
+                </bounce>
+                <contact>
+                    <ode>
+                        <max_vel>10</max_vel>
+                    </ode>
+                </contact>
+            </surface>
+        </link>
+    </xacro:macro>
+
+</robot>
