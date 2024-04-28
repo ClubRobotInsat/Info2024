@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 4.1.1 commit date:2024-04-15, commit time:15:11, hash:e1743a0317bc</authoring_tool>
+    </contributor>
+    <created>2024-04-17T18:51:28</created>
+    <modified>2024-04-17T18:51:28</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="mat_0-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <color sid="diffuse">0.5583404 0.5583404 0.5583404 1</color>
+            </diffuse>
+            <reflectivity>
+              <float sid="specular">1</float>
+            </reflectivity>
+            <index_of_refraction>
+              <float sid="ior">1.5</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="Material_001-effect">
+      <profile_COMMON>
+        <newparam sid="vinyle_table_2024_FINAL_V1__copy__jpg-surface">
+          <surface type="2D">
+            <init_from>vinyle_table_2024_FINAL_V1__copy__jpg</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="vinyle_table_2024_FINAL_V1__copy__jpg-sampler">
+          <sampler2D>
+            <source>vinyle_table_2024_FINAL_V1__copy__jpg-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="vinyle_table_2024_FINAL_V1__copy__jpg-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.5</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images>
+    <image id="vinyle_table_2024_FINAL_V1__copy__jpg" name="vinyle_table_2024_FINAL_V1__copy__jpg">
+      <init_from>vinyle_table_2024_FINAL_V1%20(copy).jpg</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="mat_0-material" name="mat_0">
+      <instance_effect url="#mat_0-effect"/>
+    </material>
+    <material id="Material_001-material" name="Material.001">
+      <instance_effect url="#Material_001-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="table-mesh" name="table">
+      <mesh>
+        <source id="table-mesh-positions">
+          <float_array id="table-mesh-positions-array" count="144">-1.522 1.022 -0.02199995 -1.522 1.022 0.06999999 -1.522 -1.022 -0.02199995 -1.522 -1.022 0.06999999 -1.522 1.022 0.06999999 1.522 1.022 0.06999999 -1.522 1.022 -0.02199995 1.522 1.022 -0.02199995 1.522 -1.022 0.06999999 -1.522 -1.022 0.06999999 1.522 -1.022 -0.02199995 -1.522 -1.022 -0.02199995 -1.522 1.022 0.06999999 -1.522 -1.022 0.06999999 1.522 -1.022 0.06999999 1.522 1.022 0.06999999 -1.5 1 0.06999999 1.5 1 0.06999999 1.5 -1 0.06999999 -1.5 -1 0.06999999 1.522 -1.022 -0.02199995 1.522 -1.022 0.06999999 1.522 1.022 -0.02199995 1.522 1.022 0.06999999 -1.5 1 0 -1.5 1 0.06999999 1.5 1 0.06999999 1.5 1 0 1.5 -1 0 1.5 -1 0.06999999 1.5 1 0.06999999 1.5 1 0 1.5 -1 0 1.5 -1 0.06999999 -1.5 -1 0.06999999 -1.5 -1 0 -1.5 1 0 -1.5 1 0.06999999 -1.5 -1 0.06999999 -1.5 -1 0 -1.5 1 0 -1.5 -1 0 1.5 -1 0 1.5 1 0 -1.522 1.022 -0.02199995 -1.522 -1.022 -0.02199995 1.522 -1.022 -0.02199995 1.522 1.022 -0.02199995</float_array>
+          <technique_common>
+            <accessor source="#table-mesh-positions-array" count="48" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="table-mesh-normals">
+          <float_array id="table-mesh-normals-array" count="27">-1 0 0 0 1 0 0 -1 0 6.62747e-7 0 1 -2.96331e-7 0 1 0 0 1 -3.72795e-7 0 1 1 0 0 0 0 -1</float_array>
+          <technique_common>
+            <accessor source="#table-mesh-normals-array" count="9" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="table-mesh-map-0">
+          <float_array id="table-mesh-map-0-array" count="168">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -4.83457e-7 -2.73855e-5 0.9999526 -4.72033e-4 0.9999867 0.9999595 -4.83457e-7 -2.73855e-5 0.9999867 0.9999595 -2.98847e-7 1.000005 0 0 0 0 0 0 0 0 0 0 0 0</float_array>
+          <technique_common>
+            <accessor source="#table-mesh-map-0-array" count="84" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="table-mesh-vertices">
+          <input semantic="POSITION" source="#table-mesh-positions"/>
+        </vertices>
+        <triangles material="mat_0-material" count="26">
+          <input semantic="VERTEX" source="#table-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#table-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#table-mesh-map-0" offset="2" set="0"/>
+          <p>2 0 0 1 0 1 0 0 2 3 0 3 1 0 4 2 0 5 5 1 6 6 1 7 4 1 8 5 1 9 7 1 10 6 1 11 9 2 12 10 2 13 8 2 14 9 2 15 11 2 16 10 2 17 16 3 18 12 3 19 13 3 20 16 4 21 13 4 22 19 4 23 14 5 24 19 5 25 13 5 26 18 5 27 19 5 28 14 5 29 15 5 30 17 5 31 18 5 32 15 6 33 18 6 34 14 6 35 15 5 36 12 5 37 16 5 38 15 5 39 16 5 40 17 5 41 22 7 42 21 7 43 20 7 44 23 7 45 21 7 46 22 7 47 27 2 48 25 2 49 24 2 50 27 2 51 26 2 52 25 2 53 31 0 54 28 0 55 29 0 56 31 0 57 29 0 58 30 0 59 35 1 60 33 1 61 32 1 62 35 1 63 34 1 64 33 1 65 39 7 66 36 7 67 37 7 68 39 7 69 37 7 70 38 7 71 47 8 78 45 8 79 44 8 80 47 8 81 46 8 82 45 8 83</p>
+        </triangles>
+        <triangles material="Material_001-material" count="2">
+          <input semantic="VERTEX" source="#table-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#table-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#table-mesh-map-0" offset="2" set="0"/>
+          <p>43 5 72 40 5 73 41 5 74 43 5 75 41 5 76 42 5 77</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="table" name="table" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#table-mesh" name="table">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="mat_0-material" target="#mat_0-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+              <instance_material symbol="Material_001-material" target="#Material_001-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

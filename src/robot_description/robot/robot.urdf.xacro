@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<robot name="atlas" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find robot_description)/urdf/base/base.urdf.xacro"/>
+    <xacro:include filename="$(find robot_description)/urdf/wheel/wheel.urdf.xacro"/>
+    <xacro:include filename="$(find robot_description)/urdf/wheel_roller/wheel_roller.urdf.xacro"/>
+    <xacro:include filename="$(find robot_description)/urdf/top/top.urdf.xacro"/>
+
+
+    <xacro:property name="chassis_radius" value="0.26"/>
+    <xacro:property name="chassis_wheel_separation" value="0.018"/>
+    <xacro:property name="wheel_roller_radius" value="0.0345"/>
+    <xacro:property name="wheel_roller_center_out" value="0.0065"/>
+
+    <!-- Wheel positions -->
+    <!-- Rotate the four values to change which wheel is in which position -->
+    <xacro:property name="wheel_pos_id_left" value="0"/>
+    <xacro:property name="wheel_pos_id_right" value="2"/>
+    <xacro:property name="wheel_pos_id_front" value="3"/>
+    <xacro:property name="wheel_pos_id_back" value="1"/>
+
+
+    <!-- Base -->
+    <link name="base_footprint"/>
+    <xacro:base_v0 parent="base_footprint">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:base_v0>
+
+    <!-- Top -->
+    <xacro:top_v0 parent="base_link">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:top_v0>
+
+    <!-- Wheels -->
+    <!-- Left wheel -->
+    <xacro:wheel_v0 prefix="left" parent="base_link">
+        <origin
+                xyz="${chassis_radius / 2 * cos(pi/2 * wheel_pos_id_left)} ${chassis_radius / 2 * sin(pi/2 * wheel_pos_id_left)} ${chassis_wheel_separation}"
+                rpy="${pi/2 * wheel_pos_id_left} 0 ${-pi/2 * wheel_pos_id_left}"
+        />
+        <axis xyz="1 0 0"/>
+    </xacro:wheel_v0>
+
+    <!-- Rollers Left wheel inside -->
+    <!-- It is a kind of for loop -->
+    <!-- The for loop is made recursively -->
+    <xacro:macro name="loop_rollers_wheel_left_in" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_in_L" parent="left_wheel_link">
+            <origin xyz="${-wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty)} ${wheel_roller_radius * sin(2*pi/7*links_qty)}"
+                    rpy="${2*pi / 7 * links_qty} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_left_in links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_left_in links_qty="7"/>
+
+    <!-- Rollers Left wheel outside -->
+    <!-- Outer rollers are place 180 degrees rotated compared to the inner rollers -->
+    <xacro:macro name="loop_rollers_wheel_left_out" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_out_L" parent="left_wheel_link">
+            <origin xyz="${wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty + pi)} ${wheel_roller_radius * sin(2*pi/7*links_qty + pi)}"
+                    rpy="${2*pi / 7 * links_qty + pi} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_left_out links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_left_out links_qty="7"/>
+
+    <!-- Right wheel -->
+    <xacro:wheel_v0 prefix="right" parent="base_link">
+        <origin xyz="${chassis_radius / 2 * cos(pi/2 * wheel_pos_id_right)} ${chassis_radius / 2 * sin(pi/2 * wheel_pos_id_right)} ${chassis_wheel_separation}"
+                rpy="${pi/2*wheel_pos_id_right} 0 ${-pi/2*wheel_pos_id_right}"/>
+        <axis xyz="1 0 0"/>
+    </xacro:wheel_v0>
+
+    <!-- Rollers Right wheel inside -->
+    <xacro:macro name="loop_rollers_wheel_right_in" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_in_R" parent="right_wheel_link">
+            <origin xyz="${-wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty)} ${wheel_roller_radius * sin(2*pi/7*links_qty)}"
+                    rpy="${2*pi / 7 * links_qty} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_right_in links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_right_in links_qty="7"/>
+
+    <!-- Rollers Right wheel outside -->
+    <xacro:macro name="loop_rollers_wheel_right_out" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_out_R" parent="right_wheel_link">
+            <origin xyz="${wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty + pi)} ${wheel_roller_radius * sin(2*pi/7*links_qty + pi)}"
+                    rpy="${2*pi / 7 * links_qty + pi} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_right_out links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_right_out links_qty="7"/>
+
+    <!-- Front wheel -->
+    <xacro:wheel_v0 prefix="front" parent="base_link">
+        <origin xyz="${chassis_radius / 2 * cos(pi/2 * wheel_pos_id_front)} ${chassis_radius / 2 * sin(pi/2 * wheel_pos_id_front)} ${chassis_wheel_separation}"
+                rpy="${-pi/2*wheel_pos_id_front} 0 ${+pi/2*wheel_pos_id_front}"/>
+        <axis xyz="1 0 0"/>
+    </xacro:wheel_v0>
+
+    <!-- Rollers Front wheel inside -->
+    <xacro:macro name="loop_rollers_wheel_front_in" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_in_F" parent="front_wheel_link">
+            <origin xyz="${-wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty)} ${wheel_roller_radius * sin(2*pi/7*links_qty)}"
+                    rpy="${2*pi / 7 * links_qty} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_front_in links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_front_in links_qty="7"/>
+
+    <!-- Rollers Front wheel outside -->
+    <xacro:macro name="loop_rollers_wheel_front_out" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_out_F" parent="front_wheel_link">
+            <origin xyz="${wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty + pi)} ${wheel_roller_radius * sin(2*pi/7*links_qty + pi)}"
+                    rpy="${2*pi / 7 * links_qty + pi} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_front_out links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_front_out links_qty="7"/>
+
+    <!-- Back wheel -->
+    <xacro:wheel_v0 prefix="back" parent="base_link">
+        <origin xyz="${chassis_radius / 2 * cos(pi/2 * wheel_pos_id_back)} ${chassis_radius / 2 * sin(pi/2 * wheel_pos_id_back)} ${chassis_wheel_separation}"
+                rpy="${-pi/2*wheel_pos_id_back} 0 ${+pi/2*wheel_pos_id_back}"/>
+        <axis xyz="1 0 0"/>
+    </xacro:wheel_v0>
+
+    <!-- Rollers Back wheel inside -->
+    <xacro:macro name="loop_rollers_wheel_back_in" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_in_B" parent="back_wheel_link">
+            <origin xyz="${-wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty)} ${wheel_roller_radius * sin(2*pi/7*links_qty)}"
+                    rpy="${2*pi / 7 * links_qty} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_back_in links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_back_in links_qty="7"/>
+
+    <!-- Rollers Back wheel outside -->
+    <xacro:macro name="loop_rollers_wheel_back_out" params="links_qty">
+        <!-- call some macros or do other things -->
+        <xacro:roller_v0 prefix="r${links_qty}_out_B" parent="back_wheel_link">
+            <origin xyz="${wheel_roller_center_out} ${wheel_roller_radius * cos(2*pi/7*links_qty + pi)} ${wheel_roller_radius * sin(2*pi/7*links_qty + pi)}"
+                    rpy="${2*pi / 7 * links_qty + pi} 0 0"/>
+            <axis xyz="0 0 1"/>
+        </xacro:roller_v0>
+
+        <!-- recursive call and termination condition -->
+        <xacro:if value="${links_qty-1}">
+            <xacro:loop_rollers_wheel_back_out links_qty="${links_qty-1}"/>
+        </xacro:if>
+    </xacro:macro>
+
+    <xacro:loop_rollers_wheel_back_out links_qty="7"/>
+
+    <!-- ================= TRANSMISSIONS ================= -->
+    <xacro:wheel_trans_v0 prefix="left"/>
+    <xacro:wheel_trans_v0 prefix="right"/>
+    <xacro:wheel_trans_v0 prefix="front"/>
+    <xacro:wheel_trans_v0 prefix="back"/>
+
+    <!-- ================= GAZEBO ================= -->
+    <xacro:include filename="$(find robot_description)/robot/ros2_control.xacro"/>
+
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find robot_simu)/config/controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+
+
+
+    <!-- Base -->
+    <xacro:base_gazebo_v0/>
+
+    <!-- Top -->
+    <xacro:top_gazebo_v0/>
+
+    <!-- Wheels -->
+    <xacro:wheel_gazebo_v0 prefix="left"/>
+    <xacro:wheel_gazebo_v0 prefix="right"/>
+    <xacro:wheel_gazebo_v0 prefix="front"/>
+    <xacro:wheel_gazebo_v0 prefix="back"/>
+</robot>

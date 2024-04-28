@@ -1,15 +1,15 @@
 {
   "name": "ROS 2 Development Container",
   "privileged": true,
-  "remoteUser": "robot",
+  "remoteUser": "pi",
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-      "USERNAME": "robot"
+      "USERNAME": "pi"
     }
   },
-  "workspaceFolder": "/home/ws",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws/src,type=bind",
+  "workspaceFolder": "/home/pi/ros2_ws",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/pi/ros2_ws/,type=bind",
   "customizations": {
     "vscode": {
       "extensions":[
@@ -41,6 +41,6 @@
 //    "source=${localWorkspaceFolder}/../cache/ROS_DISTRO/install,target=/home/ws/install,type=bind",
 //    "source=${localWorkspaceFolder}/../cache/ROS_DISTRO/log,target=/home/ws/log,type=bind"
   ],
-  "postCreateCommand": "sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) /home/ws/",
+  "postCreateCommand": "sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) /home/pi/ros2_ws",
   "postStartCommand": "sudo service ssh restart"
 }

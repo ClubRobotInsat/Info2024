@@ -31,7 +31,7 @@ class CanRawTx(Node):
 
     def on_topic_data(self,can_raw_tx_msg):
         """ Callback which is called whenever raw transmission data arrives in the can_raw_tx topic """
-
+        self.get_logger().info('Received message on /can_raw_tx: {0}'.format(can_raw_tx_msg))
         self.send_single_msg(can_raw_tx_msg.arbitration_id,can_raw_tx_msg.data,can_raw_tx_msg.err_flag,can_raw_tx_msg.rtr_flag,can_raw_tx_msg.eff_flag)
 
     def on_message(self, msg):
@@ -47,11 +47,12 @@ class CanRawTx(Node):
             arbitration_id=arbitration_id, data=data, is_extended_id=False
         )
         try:
+            self.get_logger().info('Sending message: {0}'.format(msg))
             self.can_bus.send(msg)
-            print(f"Message sent on {self.can_bus.channel_info}")
+            self.get_logger().info('Message sent on {0}'.format(self.can_bus.channel_info))
 
         except can.CanError:
-            print("Message NOT sent")
+            self.get_logger().error('Message NOT sent')
 
 def main(args=None):
     rclpy.init(args=args) #Initialise ROS2 communications
