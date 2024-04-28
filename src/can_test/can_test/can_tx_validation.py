@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rclpy
+import time
 import yaml
 from rclpy.node import Node, Timer
 import can
@@ -21,7 +22,6 @@ class CanTxValidation(Node):
         #Get test file name from the command line, in an absolute form /home/ws/src/<file name> for example
         self.declare_parameter('file_name', rclpy.Parameter.Type.STRING)
         string = str(self.get_parameter('file_name').value)
-        print(string)
         with open(string) as stream:
             try:
                 test_data = yaml.safe_load(stream)
@@ -29,7 +29,6 @@ class CanTxValidation(Node):
                 print(exc)
 
         for elt in test_data['motor_cmd']:
-            
             motorCmdData = MotorCmd()
             motorCmdData.dest = elt[0]
             motorCmdData.command_id = elt[1]
@@ -37,10 +36,10 @@ class CanTxValidation(Node):
             motorCmdData.direction = elt[3]
             motorCmdData.speed = elt[4]
             motorCmdData.extra = elt[5]
+            time.sleep(0.05)
             self.motor_cmd_publisher.publish(motorCmdData)
                 
         for elt in test_data['servo_cmd']:
-            print(1)
             servoCmdData = ServoCmd()
             servoCmdData.dest = elt[0]
             servoCmdData.command_id = elt[1]
@@ -50,15 +49,16 @@ class CanTxValidation(Node):
             servoCmdData.mode = elt[5]
             servoCmdData.torque = elt[6]
             servoCmdData.duration = elt[7]
+            time.sleep(0.05)
             self.servo_cmd_publisher.publish(servoCmdData)
         
         for elt in test_data['sensor_cmd']:
-            print(3)
             sensorCmdData = SensorCmd()
             sensorCmdData.dest = elt[0]
             sensorCmdData.command_id = elt[1]
             sensorCmdData.imu_id = elt[2]
             sensorCmdData.tof_id = elt[3]
+            time.sleep(0.05)
             self.sensor_cmd_publisher.publish(sensorCmdData)
             
             
@@ -74,8 +74,7 @@ def main(args=None):
     
     try:
         while rclpy.ok():
-            while(True):
-                pass
+            time.sleep(500)
     except KeyboardInterrupt:
         pass
 
