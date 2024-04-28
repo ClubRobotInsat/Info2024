@@ -38,6 +38,10 @@ class ServoCommands(Enum):
     GET_STATUS = 16
     GRAB = 17
     RELEASE = 18
+    HOME_POSITION = 19
+    READY_POSITION = 20
+    STORE_POT = 21
+    UNLOAD_POT = 22
 
 class SensorCommands(Enum):
     STOP = 0
@@ -177,7 +181,7 @@ class CanTx(Node):
                     
                 case ServoCommands.SET_ANGLE.value:
                     angle = int(np.ceil(msg.angle*self.float_multiplier))
-                    canRawMsg.data = [msg.command_id,msg.servo_id,((angle >> 24) & 255),((angle >> 16) & 255 ),((angle >> 8) & 255),(angle & 255),0,0,0,0,0]
+                    canRawMsg.data = [msg.command_id,msg.servo_id,((angle >> 24) & 255),((angle >> 16) & 255 ),((angle >> 8) & 255),(angle & 255),0,0]
                     
                 case ServoCommands.GET_ANGLE.value:
                     canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
@@ -230,6 +234,18 @@ class CanTx(Node):
                 case ServoCommands.RELEASE.value:
                     canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                 
+                case ServoCommands.HOME_POSITION.value:
+                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+
+                case ServoCommands.READY_POSITION.value:
+                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+
+                case ServoCommands.STORE_POT.value:
+                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+
+                case ServoCommands.UNLOAD_POT.value:
+                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+
                 case _ :
                     pass
         
@@ -243,9 +259,7 @@ class CanTx(Node):
 
         self.can_raw_tx_publisher.publish(canRawMsg)
             
-    
-        
-    
+      
 
 def main(args=None):
     rclpy.init(args=args) #Initialise ROS2 communications

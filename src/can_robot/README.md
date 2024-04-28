@@ -260,6 +260,7 @@ La structure des messages CAN est définie de cette manière:
 |      4      |   idMot   |            | getPosition(idMotor)                |
 |      5      |   idMot   |  position  | getPositionACK(idMot, position)     |
 
+# [TODO] Update the servo commands correctly, the correct ones are the ones specified by Triet
 ### Bras
 
 | ID commande | 1st param | Opt params | Description                 |
