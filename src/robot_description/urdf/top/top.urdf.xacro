@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find robot_description)/urdf/top/top.gazebo.xacro"/>
+
+    <!-- Yellow color -->
+    <material name="top_material">
+        <color rgba="1 1 0 1"/>
+    </material>
+
+    <xacro:property name="top_mass" value="3.0"/>
+    <xacro:property name="top_radius" value="0.155"/>
+    <xacro:property name="top_width" value="0.22"/>
+
+    <xacro:macro name="top_v0" params="parent *joint_origin">
+        <joint name="top_link_joint" type="fixed">
+            <xacro:insert_block name="joint_origin"/>
+            <parent link="${parent}"/>
+            <child link="top_link"/>
+        </joint>
+
+        <link name="top_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 -${pi/4}"/>
+                <geometry>
+                    <mesh filename="package://robot_description/meshes/STL/top/top.stl"/>
+                </geometry>
+                <material name="top_material"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 -${pi/4}"/>
+                <geometry>
+                    <mesh filename="package://robot_description/meshes/STL/top/top.stl"/>
+                </geometry>
+            </collision>
+            <xacro:inertial_cylinder mass="${top_mass}" length="${top_width}" radius="${top_radius}">-->
+                <origin xyz="0 0 0.2" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>0.8</mu>
+                        <mu2>0.8</mu2>
+                        <kp>1e15</kp>
+                        <kd>1e13</kd>
+                    </ode>
+                </friction>
+                <bounce>
+                    <restitution_coefficient>0.01</restitution_coefficient>
+                    <threshold>10</threshold>
+                </bounce>
+                <contact>
+                    <ode>
+                        <max_vel>0.01</max_vel>
+                        <minDepth>0</minDepth>
+                        <contact_surface_layer>0</contact_surface_layer>
+                    </ode>
+                </contact>
+            </surface>
+        </link>
+    </xacro:macro>
+</robot>

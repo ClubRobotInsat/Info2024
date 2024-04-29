@@ -32,7 +32,7 @@ TODO: Ajouter un schéma de l'architecture du robot
 
 - [x] can_robot: Paquet ROS2 pour la communication CAN avec le robot. (Voir [can_robot/README.md](src/can_robot/README.md))
 - [ ] Simulation
-- [ ] Téléopération
+- [x] Téléopération (Voir [teleop/README.md](src/teleop_twist_keyboard/README.md)
 - [ ] Navigation du robot
 - [ ] Déplacement du bras
 - [ ] Localisation
@@ -40,6 +40,7 @@ TODO: Ajouter un schéma de l'architecture du robot
 - [ ] Etat du robot
 - [ ] Évitement d'obstacles
 - [ ] Vision
+- [x] Lidar (Voir [lidar/README.md](docs/lidar.md) et [lidar/urg_node2/README.md](src/urg_node2/README.md))
 - [ ] Intelligence artificielle & Stratégie
 
 
@@ -57,7 +58,7 @@ Les fichiers entre le container et le repository sont partagés.
 ## Comment avoir un environnement de travail de qualité?
 
 - Avoir un Raspberry Pi connecté au robot ou à defaut, un setup minimal pour le developpement de la fonctionnalité
-- Lire la [documentation pour environnement Raspberry](docs/environnement_raspi.md)
+- Lire la [documentation pour environnement Raspberry](docs/config_environnement_raspi.md)
 
 ## Comment utiliser ROS2 dans ce répertoire?
 
@@ -82,6 +83,14 @@ Cette erreur peut arriver de différentes manières.
 1. Le module n'est pas installé, l'installer avec pip: `pip install python-can`
 2. Tu as créé un package ROS qui a le même nom qu'un module python que tu utilises, exemple "can" : utilisé par python-can. => Change le nom de ton package ROS2.
 
+### Package à installer
+
+- python-can
+- ros-humble-teleop-twist-keyboard
+- ros-humble-gazebo-ros-pkgs
+- ros-humble-gazebo-ros2-control
+- ros-humble-gazebo-dev
+- ros-humble-xacro
 
 ## Ressources potentielles
 

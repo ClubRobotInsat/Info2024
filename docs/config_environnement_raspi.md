@@ -57,7 +57,7 @@ dtparam=spi=on
 dtoverlay=mcp2515-can0,oscillator=8000000,interrupt=25
 ```
 
-Le paramètre oscillator correspond au quartz du CAN Transceiver (peut-être différent de 8000000)
+Le paramètre oscillator correspond au quartz du CAN Transceiver (peut-être différent de 8000000, 16000000 pour PiHat)
 Le paramètre interrupt correspond au PIN sur la Raspberry qui gère l'interruption CAN
 
 4. Tester si l'interface peut-être activée: `sudo ip link set can0 up type can bitrate 125000`
@@ -226,6 +226,11 @@ Si t'es pas convaincu, tu changeras rapidement d'avis face au temps de compilati
 ### Comment transférer des données
 
 On utilise la commande `scp`. Exemple:
-`scp -r ROS_playground pi@192.168.43.143:/home/pi/ros2_ws/src/`.
+`scp -r ROS_playground pi@192.168.43.143:/home/pi/ros2_ws/`.
 
-Cette commande envoie le dossier ROS_playground de manière récursive à la Raspi dans le dossier `/home/pi/ros2_ws/src/`.
+Cette commande envoie le dossier ROS_playground de manière récursive à la Raspi dans le dossier `/home/pi/ros2_ws/`.
+
+
+On peut également utilisé `rsync` pour synchroniser des dossiers. Exemple:
+`rsync -urltv --delete -e ssh /home/ronan/ClubRobot/Coupe_de_France/Info2024/* pi@192.168.43.115:/home/pi/ros2_ws`
+
