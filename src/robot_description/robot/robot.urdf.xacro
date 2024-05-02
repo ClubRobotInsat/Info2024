@@ -5,6 +5,7 @@
     <xacro:include filename="$(find robot_description)/urdf/wheel/wheel.urdf.xacro"/>
     <xacro:include filename="$(find robot_description)/urdf/wheel_roller/wheel_roller.urdf.xacro"/>
     <xacro:include filename="$(find robot_description)/urdf/top/top.urdf.xacro"/>
+    <xacro:include filename="$(find robot_description)/urdf/lrf/lrf.urdf.xacro"/>
 
 
     <xacro:property name="chassis_radius" value="0.26"/>
@@ -201,6 +202,13 @@
 
     <xacro:loop_rollers_wheel_back_out links_qty="7"/>
 
+
+    <!-- lrf sensor -->
+    <xacro:lrf_v0 parent="base_link">
+        <origin xyz="0 0 0.352" rpy="0 0 0"/>
+    </xacro:lrf_v0>
+
+
     <!-- ================= TRANSMISSIONS ================= -->
     <xacro:wheel_trans_v0 prefix="left"/>
     <xacro:wheel_trans_v0 prefix="right"/>
@@ -218,7 +226,6 @@
 
 
 
-
     <!-- Base -->
     <xacro:base_gazebo_v0/>
 
@@ -230,4 +237,8 @@
     <xacro:wheel_gazebo_v0 prefix="right"/>
     <xacro:wheel_gazebo_v0 prefix="front"/>
     <xacro:wheel_gazebo_v0 prefix="back"/>
+
+    <!-- lrf sensor -->
+    <xacro:lrf_gazebo_v0 min_rad = "-3.14" max_rad = "3.14" min_range = "0.1" max_range = "10"/>
+
 </robot>

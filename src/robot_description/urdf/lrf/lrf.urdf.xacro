@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<!--xacro:include filename="$(find robot_description)/robot/???????"/-->
+
+	<xacro:include filename="$(find robot_description)/urdf/lrf/lrf.gazebo.xacro"/>
+
+	<xacro:macro name="lrf_v0" params="parent *joint_origin">
+		<joint name="lrf_link_joint" type="fixed">
+			<xacro:insert_block name="joint_origin"/>
+			<parent link="${parent}"/>
+			<child link="lrf_link"/>
+		</joint>
+		<link name="lrf_link">
+		</link>
+	</xacro:macro>
+
+</robot>
