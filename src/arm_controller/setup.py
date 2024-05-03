@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'arm_controller_server = arm_controller.arm_controller_server:main',
+            'arm_controller_client = arm_controller.arm_controller_client:main'
         ],
     },
 )

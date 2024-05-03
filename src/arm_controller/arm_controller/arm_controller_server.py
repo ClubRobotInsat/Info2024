@@ -32,7 +32,7 @@ class ArmCmdID(Enum):
 class ArmController(Node):
     def __init__(self):
         super().__init__('arm_controller')
-        self.exec_arm_action_ = ActionServer(
+        self.exec_arm_action_server_ = ActionServer(
             self,
             ExecArmAction,
             "ArmController",
