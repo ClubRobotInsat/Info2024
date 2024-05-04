@@ -33,7 +33,7 @@ def generate_launch_description():
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
 
-    world_file = os.path.join(robot_simu_dir, 'worlds', 'testwtable.world')
+    world_file = os.path.join(robot_simu_dir, 'worlds', 'testwtable3.world')
 
 
 # Declare the launch arguments
@@ -54,7 +54,7 @@ def generate_launch_description():
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='true',
+        default_value='True',
         description='Use simulation (Gazebo) clock if true')
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
@@ -124,10 +124,11 @@ def generate_launch_description():
         launch_arguments={'namespace': '',
                           'use_namespace': 'False'}.items())
 
-    controller_manager = ExecuteProcess(
-        cmd=['ros2', 'control', 'controller_manager', 'load', 'robot_state_publisher'],
-        output='screen'
-    )
+
+    # controller_manager = ExecuteProcess(
+    #     cmd=['ros2', 'control', 'controller_manager', 'load', 'robot_state_publisher'],
+    #     output='screen'
+    # )
 
     forward_position_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'forward_velocity_controller'],
@@ -165,7 +166,8 @@ def generate_launch_description():
     ld.add_action(joint_state_broadcaster)
     ld.add_action(forward_position_controller)
 
-    ld.add_action(controller_manager)
+    # ld.add_action(controller_manager)
+    # ld.add_action(rf2o_node)
 
     ld.add_action(my_robot_control)
 

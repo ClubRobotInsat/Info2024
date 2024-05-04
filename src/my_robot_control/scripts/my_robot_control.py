@@ -35,11 +35,12 @@ class Commander(Node):
         vel_y = axes[1]*self.linear_vel
         vel_w = axes[2]*self.omega
 
-        # Left, Front, Right, Back
-        self.wheel_vel[0] = (vel_x*math.sin(math.pi/4            ) + vel_y*math.cos(math.pi/4            ) + self.L*vel_w)/self.Rw
-        self.wheel_vel[1] = (vel_x*math.sin(math.pi/4 + math.pi/2) + vel_y*math.cos(math.pi/4 + math.pi/2) + self.L*vel_w)/self.Rw
-        self.wheel_vel[2] = (vel_x*math.sin(math.pi/4 - math.pi)   + vel_y*math.cos(math.pi/4 - math.pi)   + self.L*vel_w)/self.Rw
-        self.wheel_vel[3] = (vel_x*math.sin(math.pi/4 - math.pi/2) + vel_y*math.cos(math.pi/4 - math.pi/2) + self.L*vel_w)/self.Rw
+        # Left 3, Front 0, Right 1, Back 2
+        self.wheel_vel[3] = (vel_x*math.sin(math.pi/4            ) + vel_y*math.cos(math.pi/4            ) + self.L*vel_w)/self.Rw
+        self.wheel_vel[0] = (vel_x*math.sin(math.pi/4 + math.pi/2) + vel_y*math.cos(math.pi/4 + math.pi/2) + self.L*vel_w)/self.Rw
+        self.wheel_vel[1] = (vel_x*math.sin(math.pi/4 - math.pi)   + vel_y*math.cos(math.pi/4 - math.pi)   + self.L*vel_w)/self.Rw
+        self.wheel_vel[2] = (vel_x*math.sin(math.pi/4 - math.pi/2) + vel_y*math.cos(math.pi/4 - math.pi/2) + self.L*vel_w)/self.Rw
+
 
         array_forPublish = Float64MultiArray(data=self.wheel_vel)
         # rclpy.logging._root_logger.info(f"wheel vel : {self.wheel_vel}")
