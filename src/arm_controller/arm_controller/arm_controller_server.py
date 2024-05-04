@@ -43,6 +43,18 @@ action_done_event = Event()
 global current_action_result
 current_action_result = False
 
+# ID arm STM32
+ARM_STM_ID = 4
+
+# ID for command
+class ArmCmdID(Enum):
+    CMD_ID_MOVE_HOME_POS = 19
+    CMD_ID_MOVE_READY_POS = 20
+    CMD_ID_MOVE_PUT_TO_STOCK = 21
+    CMD_ID_MOVE_GET_FROM_STOCK = 22
+    CMD_ID_MOVE_GRAB = 17
+    CMD_ID_MOVE_RELEASE = 18
+
 class ArmController(Node):
     def __init__(self):
         super().__init__('arm_controller')
