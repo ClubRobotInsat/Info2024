@@ -48,12 +48,15 @@ ARM_STM_ID = 4
 
 # ID for command
 class ArmCmdID(Enum):
-    CMD_ID_MOVE_HOME_POS = 19
-    CMD_ID_MOVE_READY_POS = 20
-    CMD_ID_MOVE_PUT_TO_STOCK = 21
-    CMD_ID_MOVE_GET_FROM_STOCK = 22
     CMD_ID_MOVE_GRAB = 17
     CMD_ID_MOVE_RELEASE = 18
+    CMD_ID_MOVE_HOME_POS = 19
+    CMD_ID_MOVE_READY_POS = 20
+    CMD_ID_MOVE_FIND_OBJECT_LOW = 21
+    CMD_ID_MOVE_FIND_OBJECT_HIGH = 22
+    CMD_ID_MOVE_PUT_TO_STOCK = 23
+    CMD_ID_MOVE_GET_FROM_STOCK = 24
+    CMD_ID_MOVE_PLACE_OBJECT = 25   
 
 class ArmController(Node):
     def __init__(self):
@@ -107,7 +110,7 @@ class ArmController(Node):
         msg = ServoCmd()
         msg.dest = ARM_STM_ID
         #Switch case on the type of command 
-        print(f"Action ID: {id_action}")
+        #print(f"Action ID: {id_action}")
         try:
             match id_action :
                 case ArmActionID.MOVE_HOME_POS.value:
