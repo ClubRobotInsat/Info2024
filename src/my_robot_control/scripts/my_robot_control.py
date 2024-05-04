@@ -18,13 +18,14 @@ class Commander(Node):
         self.publisher_ = self.create_publisher(Float64MultiArray, '/forward_velocity_controller/commands', 10)
 
         timer_period = 0.005
-        self.L = 0.11 # distance from the robot center to wheel
+        # self.L = 0.1241 # SIMU distance from the robot center to wheel
+        self.L = 0.135 # REAL distance from the robot center to wheel
         self.Rw = 0.041 # Radius ot the wheel
 
         self.vel_msg = Twist()
         self.threshold = 0.08
-        self.linear_vel = 1
-        self.omega = 3
+        self.linear_vel = 1.0 / 30.0
+        self.omega = 1
 
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
@@ -36,10 +37,16 @@ class Commander(Node):
         vel_w = axes[2]*self.omega
 
         # Left 3, Front 0, Right 1, Back 2
-        self.wheel_vel[3] = (vel_x*math.sin(math.pi/4            ) + vel_y*math.cos(math.pi/4            ) + self.L*vel_w)/self.Rw
-        self.wheel_vel[0] = (vel_x*math.sin(math.pi/4 + math.pi/2) + vel_y*math.cos(math.pi/4 + math.pi/2) + self.L*vel_w)/self.Rw
-        self.wheel_vel[1] = (vel_x*math.sin(math.pi/4 - math.pi)   + vel_y*math.cos(math.pi/4 - math.pi)   + self.L*vel_w)/self.Rw
-        self.wheel_vel[2] = (vel_x*math.sin(math.pi/4 - math.pi/2) + vel_y*math.cos(math.pi/4 - math.pi/2) + self.L*vel_w)/self.Rw
+        # self.wheel_vel[3] = (vel_x*math.sin(math.pi/4            ) + vel_y*math.cos(math.pi/4            ) + self.L*vel_w)/self.Rw
+        # self.wheel_vel[0] = (vel_x*math.sin(math.pi/4 + math.pi/2) + vel_y*math.cos(math.pi/4 + math.pi/2) + self.L*vel_w)/self.Rw
+        # self.wheel_vel[1] = (vel_x*math.sin(math.pi/4 - math.pi)   + vel_y*math.cos(math.pi/4 - math.pi)   + self.L*vel_w)/self.Rw
+        # self.wheel_vel[2] = (vel_x*math.sin(math.pi/4 - math.pi/2) + vel_y*math.cos(math.pi/4 - math.pi/2) + self.L*vel_w)/self.Rw
+        #
+
+        self.wheel_vel[3] = (vel_x*math.sin(0          ) + vel_y*math.cos(0          ) + self.L*vel_w)/self.Rw
+        self.wheel_vel[0] = (vel_x*math.sin(+ math.pi/2) + vel_y*math.cos(+ math.pi/2) + self.L*vel_w)/self.Rw
+        self.wheel_vel[1] = (vel_x*math.sin(- math.pi)   + vel_y*math.cos(- math.pi)   + self.L*vel_w)/self.Rw
+        self.wheel_vel[2] = (vel_x*math.sin(- math.pi/2) + vel_y*math.cos(- math.pi/2) + self.L*vel_w)/self.Rw
 
 
         array_forPublish = Float64MultiArray(data=self.wheel_vel)

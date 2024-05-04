@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <ros2_control name="GazeboSystem" type="system">
         <hardware>
-<!--            <plugin>gazebo_ros2_control/GazeboSystem</plugin>-->
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </hardware>
         <joint name="left_wheel_joint">
             <command_interface name="velocity">
