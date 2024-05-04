@@ -18,19 +18,11 @@ class Strategy(Node):
         # Create subscription to boolean /start
         self.subscription = self.create_subscription(Bool, 'start', self.test, 10)
 
-        # 100ms timer
-        self.timer_tick = 0
-        self.timer_freq = 0.1
-        self.stop_time = 0
-        self.timer = self.create_timer(self.timer_freq, self.timer_callback)
-        self.started = False
-
+        self.timer = None
 
     def timer_callback(self):
-        self.timer_tick+=1
-        if self.timer_tick > self.stop_time and self.started:
-            self.stop()
-            self.started = False
+        self.stop()
+        self.timer.destroy()
 
     def move_forward(self, x=0.0, y=0.0, duration=1.0):
         twist = Twist()
@@ -39,8 +31,7 @@ class Strategy(Node):
         self.publisher_.publish(twist)
         self.get_logger().info('Robot is moving forward')
 
-        self.started = True
-        self.stop_time = self.timer_tick + duration / self.timer_freq
+        self.timer = self.create_timer(duration, self.timer_callback)
 
 
     def turn_degrees(self, degrees, duration=1.0):
@@ -49,7 +40,7 @@ class Strategy(Node):
         self.publisher_.publish(twist)
         self.get_logger().info('Robot is turning ' + str(degrees) + ' degrees')
 
-        self.stop()
+        self.timer = self.create_timer(duration, self.timer_callback)
 
     def stop(self):
         # Stop the robot
@@ -76,7 +67,8 @@ class Strategy(Node):
         # Turn the robot 360 degrees
         # self.turn_degrees(360, duration=5.0)
         if data:
-            self.move_forward(0.0, 1.0, duration=2.0)
+            # self.move_forward(0.0, 1.0, duration=5.0)
+            self.turn_degrees(360, duration=5.0)
             # self.go_to_plant_place()
         else:
             self.stop()
