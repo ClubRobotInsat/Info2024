@@ -58,31 +58,36 @@ class ArmController(Node):
         result.action_result = True
         return result
     
-    def send_arm_cmd(self, action_id):
+    def send_arm_cmd(self, id_action):
         msg = ServoCmd()
         msg.dest = ARM_STM_ID
         #Switch case on the type of command 
+        print(f"Action ID: {id_action}")
         try:
-            match action_id :
+            match id_action :
                 case ArmAction.MOVE_HOME_POS.value:
-                    msg.command_id = ArmCmdID.CMD_ID_MOVE_HOME_POS
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_HOME_POS.value
                 case ArmAction.MOVE_READY_POS.value:
-                    msg.command_id = ArmCmdID.CMD_ID_MOVE_READY_POS
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_READY_POS.value
                 case ArmAction.MOVE_PUT_TO_STOCK.value:
-                    msg.command_id = ArmCmdID.CMD_ID_MOVE_PUT_TO_STOCK
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_PUT_TO_STOCK.value
                 case ArmAction.MOVE_GET_FROM_STOCK.value:
-                    msg.command_id = ArmCmdID.CMD_ID_MOVE_GET_FROM_STOCK
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_GET_FROM_STOCK.value
                 case ArmAction.MOVE_GRAB.value:
-                    msg.command_id = ArmCmdID.CMD_ID_MOVE_GRAB
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_GRAB.value
                 case ArmAction.MOVE_RELEASE.value:
-                    msg.command_id = ArmCmdID.CMD_ID_MOVE_RELEASE
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_RELEASE.value
                 case _:
                     pass
-        except:
-            self.get_logger().info('Invalid Herkulek action ID')
-            return
+        except Exception as err :
+            print(f"Unexpected {err=}, {type(err)=}")
+            pass
         # Publish the message
-        self.arm_pub_.publish(msg)
+        if(msg.command_id != 0):
+            self.get_logger().info('Sending command: %d' % msg.command_id)
+            self.arm_pub_.publish(msg)            
+        else:
+            self.get_logger().info('Invalid action ID: %d' % id_action)
         
 
 def main(args=None):

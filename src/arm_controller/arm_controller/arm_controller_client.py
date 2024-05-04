@@ -5,14 +5,14 @@ from rclpy.action import ActionClient
 from rclpy.action.client import ClientGoalHandle
 from arm_interface.action import ExecArmAction
 
-### CONSTANT ###
-# ID for action
-MOVE_HOME_POS = 1
-MOVE_READY_POS = 2
-MOVE_PUT_TO_STOCK = 3
-MOVE_GET_FROM_STOCK = 4
-MOVE_GRAB = 5
-MOVE_RELEASE = 6
+# ### CONSTANT ###
+# # ID for action
+# MOVE_HOME_POS = 1
+# MOVE_READY_POS = 2
+# MOVE_PUT_TO_STOCK = 3
+# MOVE_GET_FROM_STOCK = 4
+# MOVE_GRAB = 5
+# MOVE_RELEASE = 6
 
 class ArmControllerClient(Node):
     def __init__(self):
@@ -20,7 +20,7 @@ class ArmControllerClient(Node):
         self.exec_arm_action_client_ = ActionClient(
             self,
             ExecArmAction,
-            "arm_action")
+            "ArmController")
         self.get_logger().info('Arm Controller Client Started')
     
     def send_request(self, action_id):
@@ -36,6 +36,8 @@ class ArmControllerClient(Node):
         if self.goal_handle_.accepted:
             self.get_logger().info('Goal accepted')
             self.goal_handle_.get_result_async().add_done_callback(self.get_result_callback)
+        else:
+            self.get_logger().info('Goal rejected')
 
     def get_result_callback(self, future):
         result = future.result().result
@@ -47,6 +49,8 @@ def main(args=None):
         rclpy.init(args=args)
         arm_controller_client = ArmControllerClient()
         arm_controller_client.send_request(action_request)
+        arm_controller_client.send_request(action_request+1)
+        arm_controller_client.send_request(action_request+2)
         rclpy.spin(arm_controller_client)
     except KeyboardInterrupt:
         rclpy.shutdown()
