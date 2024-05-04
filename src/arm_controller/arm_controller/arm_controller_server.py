@@ -3,39 +3,45 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
 from rclpy.action.server import ServerGoalHandle
-from arm_interface.action import ExecArmAction
+from arm_interface.action import ArmAction
 from can_interface.msg import ServoCmd
 from enum import Enum
 
 ### CONSTANT ###
 # ID for action
-class ArmAction(Enum):
-    MOVE_HOME_POS = 1
-    MOVE_READY_POS = 2
-    MOVE_PUT_TO_STOCK = 3
-    MOVE_GET_FROM_STOCK = 4
-    MOVE_GRAB = 5
-    MOVE_RELEASE = 6
+class ArmActionID(Enum):
+    MOVE_GRAB = 1
+    MOVE_RELEASE = 2
+    MOVE_HOME_POS = 3
+    MOVE_READY_POS = 4
+    MOVE_FIND_OBJECT_LOW = 5
+    MOVE_FIND_OBJECT_HIGH = 6
+    MOVE_PUT_TO_STOCK = 7
+    MOVE_GET_FROM_STOCK = 8
+    MOVE_PLACE_OBJECT = 9
 
 # ID arm STM32
 ARM_STM_ID = 4
 
 # ID for command
 class ArmCmdID(Enum):
-    CMD_ID_MOVE_HOME_POS = 19
-    CMD_ID_MOVE_READY_POS = 20
-    CMD_ID_MOVE_PUT_TO_STOCK = 21
-    CMD_ID_MOVE_GET_FROM_STOCK = 22
     CMD_ID_MOVE_GRAB = 17
     CMD_ID_MOVE_RELEASE = 18
+    CMD_ID_MOVE_HOME_POS = 19
+    CMD_ID_MOVE_READY_POS = 20
+    CMD_ID_MOVE_FIND_OBJECT_LOW = 21
+    CMD_ID_MOVE_FIND_OBJECT_HIGH = 22
+    CMD_ID_MOVE_PUT_TO_STOCK = 23
+    CMD_ID_MOVE_GET_FROM_STOCK = 24
+    CMD_ID_MOVE_PLACE_OBJECT = 25   
 
 class ArmController(Node):
     def __init__(self):
         super().__init__('arm_controller')
-        self.exec_arm_action_server_ = ActionServer(
+        self.arm_action_server_ = ActionServer(
             self,
-            ExecArmAction,
-            "ArmController",
+            ArmAction,
+            "ArmAction",
             execute_callback=self.arm_execute_callback)
         # Initialize current position of arm
         self.current_pos_ = [0, 0, 0]
@@ -54,7 +60,7 @@ class ArmController(Node):
         # Update goal final status
         goal_handle.succeed()
         # Send the result
-        result = ExecArmAction.Result()
+        result = ArmAction.Result()
         result.action_result = True
         return result
     
@@ -62,20 +68,26 @@ class ArmController(Node):
         msg = ServoCmd()
         msg.dest = ARM_STM_ID
         #Switch case on the type of command 
-        print(f"Action ID: {id_action}")
+        #print(f"Action ID: {id_action}")
         try:
             match id_action :
-                case ArmAction.MOVE_HOME_POS.value:
+                case ArmActionID.MOVE_HOME_POS.value:
                     msg.command_id = ArmCmdID.CMD_ID_MOVE_HOME_POS.value
-                case ArmAction.MOVE_READY_POS.value:
+                case ArmActionID.MOVE_READY_POS.value:
                     msg.command_id = ArmCmdID.CMD_ID_MOVE_READY_POS.value
-                case ArmAction.MOVE_PUT_TO_STOCK.value:
+                case ArmActionID.MOVE_FIND_OBJECT_LOW.value:
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_FIND_OBJECT_LOW.value
+                case ArmActionID.MOVE_FIND_OBJECT_HIGH.value:
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_FIND_OBJECT_HIGH.value
+                case ArmActionID.MOVE_PUT_TO_STOCK.value:
                     msg.command_id = ArmCmdID.CMD_ID_MOVE_PUT_TO_STOCK.value
-                case ArmAction.MOVE_GET_FROM_STOCK.value:
+                case ArmActionID.MOVE_GET_FROM_STOCK.value:
                     msg.command_id = ArmCmdID.CMD_ID_MOVE_GET_FROM_STOCK.value
-                case ArmAction.MOVE_GRAB.value:
+                case ArmActionID.MOVE_PLACE_OBJECT.value:
+                    msg.command_id = ArmCmdID.CMD_ID_MOVE_PLACE_OBJECT.value
+                case ArmActionID.MOVE_GRAB.value:
                     msg.command_id = ArmCmdID.CMD_ID_MOVE_GRAB.value
-                case ArmAction.MOVE_RELEASE.value:
+                case ArmActionID.MOVE_RELEASE.value:
                     msg.command_id = ArmCmdID.CMD_ID_MOVE_RELEASE.value
                 case _:
                     pass

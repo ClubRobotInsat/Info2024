@@ -1,0 +1,20 @@
+# Goal
+uint8 action_id
+---
+# Result
+bool action_result
+---
+
+## ArmAction.action
+#@brief An interface for executing arm actions
+#@param action_id The id of the action to execute
+#                1 : Grab
+#                2 : Release
+#                3 : Move to home position
+#                4 : Move to ready position
+#                5 : Move to find objet low position
+#                6 : Move to find object high position
+#                7 : Put object to stock
+#                8 : Get object from stock
+#                9 : Place object on table
+#@param action_result True if the action was successful, False otherwise

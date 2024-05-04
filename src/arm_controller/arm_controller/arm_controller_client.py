@@ -3,33 +3,35 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from rclpy.action.client import ClientGoalHandle
-from arm_interface.action import ExecArmAction
+from arm_interface.action import ArmAction
 
-# ### CONSTANT ###
-# # ID for action
-# MOVE_HOME_POS = 1
-# MOVE_READY_POS = 2
-# MOVE_PUT_TO_STOCK = 3
-# MOVE_GET_FROM_STOCK = 4
-# MOVE_GRAB = 5
-# MOVE_RELEASE = 6
+# ### ArmAction ID ###
+#                1 : Grab
+#                2 : Release
+#                3 : Move to home position
+#                4 : Move to ready position
+#                5 : Move to find objet low position
+#                6 : Move to find object high position
+#                7 : Put object to stock
+#                8 : Get object from stock
+#                9 : Place object on table
 
 class ArmControllerClient(Node):
     def __init__(self):
         super().__init__('arm_controller_client')
-        self.exec_arm_action_client_ = ActionClient(
+        self.arm_action_client_ = ActionClient(
             self,
-            ExecArmAction,
-            "ArmController")
+            ArmAction,
+            "ArmAction")
         self.get_logger().info('Arm Controller Client Started')
     
     def send_request(self, action_id):
-        self.exec_arm_action_client_.wait_for_server()
+        self.arm_action_client_.wait_for_server()
 
-        goal_msg = ExecArmAction.Goal()
+        goal_msg = ArmAction.Goal()
         goal_msg.action_id = action_id
         self.get_logger().info('Sending request for action: %d' % action_id)
-        self.exec_arm_action_client_.send_goal_async(goal_msg).add_done_callback(self.goal_response_callback)
+        self.arm_action_client_.send_goal_async(goal_msg).add_done_callback(self.goal_response_callback)
     
     def goal_response_callback(self, future):
         self.goal_handle_ : ClientGoalHandle = future.result()
@@ -48,9 +50,8 @@ def main(args=None):
         action_request = 1
         rclpy.init(args=args)
         arm_controller_client = ArmControllerClient()
-        arm_controller_client.send_request(action_request)
-        arm_controller_client.send_request(action_request+1)
-        arm_controller_client.send_request(action_request+2)
+        for i in range(10):
+            arm_controller_client.send_request(action_request+i)
         rclpy.spin(arm_controller_client)
     except KeyboardInterrupt:
         rclpy.shutdown()
