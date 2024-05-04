@@ -107,6 +107,7 @@ class ArmController(Node):
         msg = ServoCmd()
         msg.dest = ARM_STM_ID
         #Switch case on the type of command 
+        print(f"Action ID: {id_action}")
         try:
             match id_action :
                 case ArmActionID.MOVE_HOME_POS.value:
