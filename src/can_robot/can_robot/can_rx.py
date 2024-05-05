@@ -55,9 +55,9 @@ class CanRx(Node):
         self.canraw_subscriber = self.create_subscription(CanRaw, 'can_raw_rx', self.receive_data, 10)
         # Publish in all data feedback topics
         self.imu_data_publisher = self.create_publisher(Imu, 'imu_data', 10)
-        self.motors_feedback_publisher = self.create_publisher(JointState, 'joint_state', 10)
+        self.motors_feedback_publisher = self.create_publisher(JointState, 'motors_feedback', 10)
         self.arm_feedback_publisher = self.create_publisher(ArmFeedback, 'arm_feedback', 10)
-        self.ultrasound_publisher = self.create_publisher(Range, 'range', 10)
+        self.ultrasound_publisher = self.create_publisher(Range, 'ultrasound_range', 10)
         self.tirette_publisher = self.create_publisher(Tirette, 'tirette', 10)
 
     def receive_data(self, msg):
