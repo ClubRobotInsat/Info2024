@@ -60,7 +60,7 @@ def generate_launch_description():
         executable='control_can.py',
         output='screen'
     )
-    delayed_controller_manager = TimerAction(period=1.5, actions=[controller_manager])
+    delayed_controller_manager = TimerAction(period=0.5, actions=[controller_manager])
 
     my_robot_control = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

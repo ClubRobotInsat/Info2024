@@ -9,7 +9,7 @@ from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from nav2_common.launch import ReplaceString
+# from nav2_common.launch import ReplaceString
 
 
 def generate_launch_description():
@@ -50,9 +50,9 @@ def generate_launch_description():
         arguments=['-d', rviz_config_file]
     )
 
-    namespaced_rviz_config_file = ReplaceString(
-        source_file=rviz_config_file,
-        replacements={'<robot_namespace>': ('/', namespace)})
+    # namespaced_rviz_config_file = ReplaceString(
+    #     source_file=rviz_config_file,
+    #     replacements={'<robot_namespace>': ('/', namespace)})
 
     start_namespaced_rviz_cmd = Node(
         condition=IfCondition(use_namespace),
@@ -60,7 +60,7 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', namespaced_rviz_config_file],
+        # arguments=['-d', namespaced_rviz_config_file],
         remappings=[('/tf', 'tf'),
                     ('/tf_static', 'tf_static'),
                     ('/goal_pose', 'goal_pose'),

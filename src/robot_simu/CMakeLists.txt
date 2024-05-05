@@ -7,8 +7,8 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-#find_package(gazebo REQUIRED)
-#find_package(gazebo_ros_pkgs REQUIRED)
+#find_package(gazebo REQUIRED) # For simulation
+#find_package(gazebo_ros_pkgs REQUIRED) # For simulation
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -52,7 +52,7 @@ install(
 )
 
 ament_export_include_directories(include)
-#ament_export_dependencies(gazebo_ros_pkgs)
+#ament_export_dependencies(gazebo_ros_pkgs) # For simulation
 ament_export_dependencies(geometry_msgs)
 ament_export_dependencies(nav_msgs)
 ament_export_dependencies(rclcpp)

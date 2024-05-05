@@ -1,8 +1,0 @@
-motor_cmd :
-  - [1,2,3,0,5.0,6] # dest, command_id, motor_id, direction, speed, extra
-  - [66,55,22,33,5.5,2]
-
-servo_cmd :
-#[TO BE DONE IN CAN_TEST NODE AND YAML]
-sensor_cmd :
-#[TO BE DONE IN CAN_TEST NODE AND YAML]

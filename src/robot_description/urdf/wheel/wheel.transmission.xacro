@@ -8,7 +8,7 @@
             </joint>
             <actuator name="${prefix}_wheel_motor">
                 <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-                <mechanicalReduction>30</mechanicalReduction>
+                <mechanicalReduction>1</mechanicalReduction>
             </actuator>
         </transmission>
     </xacro:macro>

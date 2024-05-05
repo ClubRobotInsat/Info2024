@@ -38,14 +38,19 @@ sensor_instr_dict=dict((v,k) for (k,v) in sensor_instr_id_tab.items())
 
 # l'en tête est un int
 def decomposer_en_tete(en_tete):
-    return (en_tete>>8,(en_tete>>4)&15,en_tete&15)
+    return en_tete >> 8, (en_tete >> 4) & 15, en_tete & 15
+
 
 class CanRx(Node):
     def __init__(self):
 
         super().__init__('can_rx')
 
-        # Subscribe to can_raw topic
+        #self.bus = can.interface.Bus(interface='socketcan',
+        #              channel='can0',
+        #              receive_own_messages=True)
+
+        #notifier = can.Notifier(self.bus, [self.on_message])
         self.canraw_subscriber = self.create_subscription(CanRaw, 'can_raw_rx', self.receive_data, 10)
         # Publish in all data feedback topics
         self.imu_data_publisher = self.create_publisher(Imu, 'imu_data', 10)
@@ -76,17 +81,17 @@ class CanRx(Node):
 
             match source_id:
                 case "urgence":
-                    #emergency msg -> where to propagate?
+                    # emergency msg -> where to propagate?
                     pass
                 case "raspi":
-                    #msg comes from raspi -> loopback?
+                    # msg comes from raspi -> loopback?
                     pass
                 case "herkulex":
-                    arm_msg = ArmFeedback() #init arm message
-                    arm_instruction=arm_instr_dict.get(data[0]) #identify instruction
+                    arm_msg = ArmFeedback()  # init arm message
+                    arm_instruction = arm_instr_dict.get(data[0])  # identify instruction
                     match arm_instruction:
                         case "grab":
-                           arm_msg.action_id = ArmFeedback.GRAB_ACTION
+                            arm_msg.action_id = ArmFeedback.GRAB_ACTION
                         case "release":
                             arm_msg.action_id = ArmFeedback.RELEASE_ACTION
                         case "moveToHomePosition":
@@ -109,10 +114,10 @@ class CanRx(Node):
                             arm_msg.action_id = ArmFeedback.PREVIOUS_RING_ACTION
                         case _:
                             pass
-                    arm_msg.action_result = bool(data[1]) #get action result
+                    arm_msg.action_result = bool(data[1])  # get action result
 
-                    self.arm_feedback_publisher.publish(arm_msg) #publish in Arm Feedback topic
-                    self.get_logger().info('Sent message: {0}'.format(arm_msg)) #display
+                    self.arm_feedback_publisher.publish(arm_msg)  # publish in Arm Feedback topic
+                    self.get_logger().info('Sent message: {0}'.format(arm_msg))  # display
 
                 case "base_roulante1":
                     motors_msg = JointState() #init Motor message
@@ -249,13 +254,12 @@ def main(args=None):
 
     rclpy.spin(node)
 
-    r = rospy.Rate(10) # 10hz
+    r = rospy.Rate(10)  # 10hz
     try:
         while not rospy.is_shutdown():
             r.sleep()
     except KeyboardInterrupt:
         bus.shutdown()
-
 
     rclpy.shutdown()
 
