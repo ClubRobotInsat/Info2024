@@ -16,7 +16,8 @@ set(msg_files
         "msg/ArmFeedback.msg"
         "msg/ServoCmd.msg"
         "msg/MotorCmd.msg"
-       "msg/SensorCmd.msg"
+        "msg/SensorCmd.msg"
+        "msg/Enemy.msg"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
