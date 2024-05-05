@@ -119,9 +119,9 @@ class CanRx(Node):
                     self.arm_feedback_publisher.publish(arm_msg)  # publish in Arm Feedback topic
                     self.get_logger().info('Sent message: {0}'.format(arm_msg))  # display
 
-                case "base_roulante1":
+                case "base_roulante1", "base-roulante2":
                     motors_msg = JointState()  # init Motor message
-                    motors_msg.name = []
+                    motors_msg.name = str(source_id)
                     motors_msg.position = []
                     motors_msg.velocity = []
 
@@ -143,29 +143,6 @@ class CanRx(Node):
                     self.motors_feedback_publisher.publish(motors_msg)  # publish message in Motor Feedback topic
                     self.get_logger().info('Sent message: {0}'.format(motors_msg))  # display
 
-                case "base_roulante2":
-                    motors_msg = JointState()  # init Motor message
-                    motors_msg.name = []
-                    motors_msg.position = []
-                    motors_msg.velocity = []
-
-                    motor_instruction = motor_instr_dict.get(data[0])  # identify instruction
-                    match motor_instruction:
-                        case "getTargetSpeedACK":
-                            if (data[3] != 0):  # if speed is Ack
-                                motors_msg.name.append(str(data[1]))  # append motor ID
-                                motors_msg.velocity.append(convert_mm_into_m(data[2]))  # append speed in m/s
-                            else:
-                                pass
-                        case "getCurrentSpeed":
-                            motors_msg.name.append(str(data[1]))
-                            motors_msg.velocity.append(
-                                convert_mm_into_m(convert_4bytes_into_signedfloat(data[2], data[3], data[4], data[5])))
-                        case _:
-                            pass
-
-                    self.motors_feedback_publisher.publish(motors_msg)  # publish message in Motor Feedback topic
-                    self.get_logger().info('Sent message: {0}'.format(motors_msg))  # display
 
                 case "capteurs":
                     sensor_instruction = sensor_instr_dict.get(data[0])  # identify instruction
