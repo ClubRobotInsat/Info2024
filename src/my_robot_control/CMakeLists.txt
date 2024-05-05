@@ -44,6 +44,7 @@ install(
         PROGRAMS
         scripts/my_robot_control.py
         scripts/control_can.py
+        scripts/command_test_scripts.py
         launch/my_robot_control.launch.py
         DESTINATION lib/${PROJECT_NAME}
 )
