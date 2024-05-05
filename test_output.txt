@@ -1,0 +1,476 @@
+arbitration_id: 0
+data:
+- 2
+- 3
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 16
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 32
+data:
+- 2
+- 3
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 48
+data:
+- 2
+- 3
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 64
+data:
+- 2
+- 3
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 80
+data:
+- 2
+- 3
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 96
+data:
+- 2
+- 3
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 0
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 16
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 32
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 48
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 64
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 80
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 96
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 112
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 128
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 144
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 160
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 176
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 192
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 208
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 224
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 240
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 256
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 272
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 288
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 304
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 336
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 352
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 0
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 16
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 32
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 48
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
+arbitration_id: 64
+data:
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+err_flag: 0
+rtr_flag: 0
+eff_flag: 0
+---
