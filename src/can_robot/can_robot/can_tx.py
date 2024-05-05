@@ -228,23 +228,8 @@ class CanTx(Node):
                 case ServoCommands.GET_STATUS.value:
                     canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
                 
-                case ServoCommands.GRAB.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-                
-                case ServoCommands.RELEASE.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-                
-                case ServoCommands.HOME_POSITION.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-
-                case ServoCommands.READY_POSITION.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-
-                case ServoCommands.STORE_POT.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-
-                case ServoCommands.UNLOAD_POT.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+                case ServoCommands.GRAB.value, ServoCommands.RELEASE.value, ServoCommands.HOME_POSITION.value, ServoCommands.READY_POSITION.value, ServoCommands.STORE_POT.value, ServoCommands.UNLOAD_POT.value:
+                    canRawMsg.data = [msg.command_id, 0, 0, 0, 0, 0, 0, 0]
 
                 case _ :
                     pass
