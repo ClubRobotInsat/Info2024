@@ -11,7 +11,7 @@ from can_interface.msg import ArmFeedback, CanRaw, Tirette
 
 ##########################################################################################
 # HEADER IDs
-tab_ids = {"urgence": 0, "raspi": 1, "base_roulante1": 2, "base-roulante2": 3, "herkulex": 4, "capteurs": 5}
+tab_ids = {"urgence": 0, "raspi": 1, "base_roulante1": 2, "base_roulante2": 3, "herkulex": 4, "capteurs": 5}
 reversed_tab_ids = dict((v, k) for (k, v) in tab_ids.items())
 
 # HERKULEX INSTRUCTION IDs
@@ -87,6 +87,7 @@ class CanRx(Node):
                     # msg comes from raspi -> loopback?
                     pass
                 case "herkulex":
+                    self.get_logger().info("Received Arm Data")
                     arm_msg = ArmFeedback()  # init arm message
                     arm_instruction = arm_instr_dict.get(data[0])  # identify instruction
                     match arm_instruction:
@@ -119,9 +120,11 @@ class CanRx(Node):
                     self.arm_feedback_publisher.publish(arm_msg)  # publish in Arm Feedback topic
                     self.get_logger().info('Sent message: {0}'.format(arm_msg))  # display
 
-                case "base_roulante1", "base-roulante2":
+                case "base_roulante1" | "base_roulante2":
+                    self.get_logger().info("Received Motor Data")
                     motors_msg = JointState()  # init Motor message
-                    motors_msg.name = str(source_id)
+                    motors_msg.name = []
+                    motors_msg.name.append(str(source_id))
                     motors_msg.position = []
                     motors_msg.velocity = []
 
@@ -145,6 +148,7 @@ class CanRx(Node):
 
 
                 case "capteurs":
+                    self.get_logger().info("Received Sensor Data")
                     sensor_instruction = sensor_instr_dict.get(data[0])  # identify instruction
                     match sensor_instruction:
                         case "get_accel":
@@ -187,6 +191,9 @@ class CanRx(Node):
                         case _:
                             pass
                 case _:
+                    self.get_logger().error("Unknown ID")
+                    # Print id
+                    self.get_logger().error("ID: {0}".format(source_id))
                     pass
 
 
@@ -195,7 +202,7 @@ def convert_4bytes_into_signedfloat(b1, b2, b3, b4):
     Convert 4 bytes into a signed float value
     Big endian
     '''
-    int_value = b1 | (b2 << 8) | (b3 << 16) | (b4 << 24)
+    int_value = b4 | (b3 << 8) | (b2 << 16) | (b1 << 24)
     return struct.unpack('f', struct.pack('I', int_value))[0]
 
 
@@ -204,7 +211,7 @@ def convert_2bytes_into_signedfloat(b1, b2):
     Convert 2 bytes into a signed float value
     Big endian
     '''
-    int_value = b1 | (b2 << 8)
+    int_value = b2 | (b1 << 8)
     return struct.unpack('f', struct.pack('I', int_value))[0]
 
 
