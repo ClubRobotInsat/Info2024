@@ -206,15 +206,17 @@ class CanRx(Node):
 def convert_4bytes_into_signedfloat(b1, b2, b3, b4):
     '''
     Convert 4 bytes into a signed float value
+    Big endian
     '''
-    int_value = b1 | (b2 << 8) | (b3 << 16) | (b4 << 24)
+    int_value = b4 | (b3 << 8) | (b2 << 16) | (b1 << 24)
     return struct.unpack('f', struct.pack('I', int_value))[0]
 
 def convert_2bytes_into_signedfloat(b1, b2):
     '''
     Convert 2 bytes into a signed float value
+    Big endian
     '''
-    int_value = b1 | (b2 << 8)
+    int_value = b2 | (b1 << 8)
     return struct.unpack('f', struct.pack('I', int_value))[0]
 
 
