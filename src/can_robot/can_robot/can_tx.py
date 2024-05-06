@@ -137,11 +137,11 @@ class CanTx(Node):
                     
                 case MotorCommands.SET_SPEED.value:
                     byte_array = float_to_bytes(msg.speed)
-                    canRawMsg.data = [msg.command_id,msg.motor_id,byte_array[0],byte_array[1],byte_array[2],byte_array[3],0,0]
+                    canRawMsg.data = [msg.command_id,msg.motor_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                     
                 case MotorCommands.GET_SPEED_ACK.value:
                     byte_array = float_to_bytes(msg.speed)
-                    canRawMsg.data = [msg.command_id,msg.motor_id,byte_array[0],byte_array[1],byte_array[2],byte_array[3],0,0]
+                    canRawMsg.data = [msg.command_id,msg.motor_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
         
                 case MotorCommands.SET_DIR.value:
                     canRawMsg.data = [msg.command_id,msg.motor_id,msg.direction,0,0,0,0,0]
@@ -182,25 +182,25 @@ class CanTx(Node):
                     
                 case ServoCommands.SET_ANGLE.value:
                     byte_array = float_to_bytes(msg.angle)
-                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[0],byte_array[1],byte_array[2],byte_array[3],0,0]
+                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                     
                 case ServoCommands.GET_ANGLE.value:
                     canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
                     
                 case ServoCommands.GET_ANGLE_ACK.value:
                     byte_array = float_to_bytes(msg.angle)
-                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[0],byte_array[1],byte_array[2],byte_array[3],0,0]
+                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                 
                 case ServoCommands.SET_SPEED.value:
                     byte_array = float_to_bytes(msg.speed)
-                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[0],byte_array[1],byte_array[2],byte_array[3],0,0]
+                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                 
                 case ServoCommands.GET_SPEED.value:
                     canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
                 
                 case ServoCommands.GET_SPEED_ACK.value:
                     byte_array = float_to_bytes(msg.speed)
-                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[0],byte_array[1],byte_array[2],byte_array[3],0,0]
+                    canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                 
                 case ServoCommands.SET_SPIN_DURATION.value:
                     canRawMsg.data = [msg.command_id,msg.servo_id,((msg.duration >> 8) & 255),(msg.duration & 255),0,0,0,0]
