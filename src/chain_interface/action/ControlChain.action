@@ -1,0 +1,12 @@
+#Goal
+int16 chain_action_id
+---
+#Result
+bool success
+---
+
+###ControlAction.action
+###chain_action_id :
+#                     1 : run clockwise the chain
+#                     2 : run counter clockwise the chain
+###success : 1 if the action was successful, 0 otherwise
