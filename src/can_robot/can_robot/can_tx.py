@@ -173,67 +173,68 @@ class CanTx(Node):
         header = generate_header(prio,msg.dest,origin)
         canRawMsg.arbitration_id = header
         try: 
-            # match msg.command_id:
-            #     case ServoCommands.STOP.value:
-            #         canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+            match msg.command_id:
+              case ServoCommands.STOP.value:
+                canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                     
-            #     case ServoCommands.PING.value:
-            #         canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+              case ServoCommands.PING.value:
+                canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                     
-            #     case ServoCommands.SET_ANGLE.value:
-            #         byte_array = float_to_bytes(msg.angle)
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+              case ServoCommands.SET_ANGLE.value:
+                byte_array = float_to_bytes(msg.angle)
+                canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                     
-            #     case ServoCommands.GET_ANGLE.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                    
-            #     case ServoCommands.GET_ANGLE_ACK.value:
-            #         byte_array = float_to_bytes(msg.angle)
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
-                
-            #     case ServoCommands.SET_SPEED.value:
-            #         byte_array = float_to_bytes(msg.speed)
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
-                
-            #     case ServoCommands.GET_SPEED.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-            #     case ServoCommands.GET_SPEED_ACK.value:
-            #         byte_array = float_to_bytes(msg.speed)
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
-                
-            #     case ServoCommands.SET_SPIN_DURATION.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,((msg.duration >> 8) & 255),(msg.duration & 255),0,0,0,0]
-                
-            #     case ServoCommands.CHANGE_MODE.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
-                
-            #     case ServoCommands.GET_MODE.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
-                
-            #     case ServoCommands.SET_TORQUE.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,msg.torque,0,0,0,0,0]
-                
-            #     case ServoCommands.GET_TORQUE.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-            #     case ServoCommands.REBOOT.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-            #     case ServoCommands.CLEAR_ERROR.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-            #     case ServoCommands.GET_ERROR.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-            #     case ServoCommands.GET_STATUS.value:
-            #         canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-            #     case ServoCommands.GRAB.value, ServoCommands.RELEASE.value, ServoCommands.HOME_POSITION.value, ServoCommands.READY_POSITION.value, ServoCommands.STORE_POT.value, ServoCommands.UNLOAD_POT.value:
-            #         canRawMsg.data = [msg.command_id, 0, 0, 0, 0, 0, 0, 0]
+              case ServoCommands.GET_ANGLE.value:
+                canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
 
-            #     case _ :
-            #         pass
+              case ServoCommands.GET_ANGLE_ACK.value:
+                  byte_array = float_to_bytes(msg.angle)
+                  canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+
+              case ServoCommands.SET_SPEED.value:
+                  byte_array = float_to_bytes(msg.speed)
+                  canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+
+              case ServoCommands.GET_SPEED.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_SPEED_ACK.value:
+                  byte_array = float_to_bytes(msg.speed)
+                  canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+
+              case ServoCommands.SET_SPIN_DURATION.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,((msg.duration >> 8) & 255),(msg.duration & 255),0,0,0,0]
+
+              case ServoCommands.CHANGE_MODE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
+
+              case ServoCommands.GET_MODE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
+
+              case ServoCommands.SET_TORQUE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,msg.torque,0,0,0,0,0]
+
+              case ServoCommands.GET_TORQUE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.REBOOT.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.CLEAR_ERROR.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_ERROR.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_STATUS.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GRAB.value | ServoCommands.RELEASE.value | ServoCommands.HOME_POSITION.value | ServoCommands.READY_POSITION.value | ServoCommands.STORE_POT.value | ServoCommands.UNLOAD_POT.value:
+                  canRawMsg.data = [msg.command_id, 0, 0, 0, 0, 0, 0, 0]
+
+
+             case _ :
+                   pass
             canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
             
         except Exception as err:
