@@ -9,6 +9,18 @@ from time import sleep
 from std_msgs.msg import Bool
 
 class Homologation(Node):
+    '''
+    This class is the node for the homologation.
+
+    What the robot should do:
+    - Start moving forward
+    - Stop moving forward
+    - Move the arm and the chain
+    - Go to the final place
+    - Start on the left, go to the right
+
+    - If enemy is detected, stop the robot
+    '''
     def __init__(self):
         super().__init__('homologation')
         self.get_logger().info('Homologation node has been started')
