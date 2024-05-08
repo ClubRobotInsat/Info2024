@@ -6,6 +6,7 @@ from rclpy.node import Node
 from enum import Enum
 import can
 import numpy as np
+import struct
 
 from can_interface.msg import CanRaw,ServoCmd,MotorCmd,SensorCmd
 
@@ -38,6 +39,10 @@ class ServoCommands(Enum):
     GET_STATUS = 16
     GRAB = 17
     RELEASE = 18
+    HOME_POSITION = 19
+    READY_POSITION = 20
+    STORE_POT = 21
+    UNLOAD_POT = 22
 
 class SensorCommands(Enum):
     STOP = 0
@@ -54,7 +59,8 @@ def generate_header(prio,dest,origine):
     header = (header ^ (origine))
     return header
 
-
+def float_to_bytes(f):
+    return struct.pack('f', f)
 
 class CanTx(Node):
     
@@ -130,13 +136,12 @@ class CanTx(Node):
                     canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                     
                 case MotorCommands.SET_SPEED.value:
-                    # Convert speed into adequate data type [Must be improved for float compatibility]
-                    speed = int(np.ceil(msg.speed*self.float_multiplier)) 
-                    canRawMsg.data = [msg.command_id,msg.motor_id,((speed >> 24) & 255),((speed >> 16) & 255 ),((speed >> 8) & 255),(speed & 255),0,0]
+                    byte_array = float_to_bytes(msg.speed)
+                    canRawMsg.data = [msg.command_id,msg.motor_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                     
                 case MotorCommands.GET_SPEED_ACK.value:
-                    speed = int(np.ceil(msg.speed*self.float_multiplier))
-                    canRawMsg.data = [msg.command_id,msg.motor_id,((speed >> 24) & 255),((speed >> 16) & 255 ),((speed >> 8) & 255),(speed & 255),0,0]
+                    byte_array = float_to_bytes(msg.speed)
+                    canRawMsg.data = [msg.command_id,msg.motor_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
         
                 case MotorCommands.SET_DIR.value:
                     canRawMsg.data = [msg.command_id,msg.motor_id,msg.direction,0,0,0,0,0]
@@ -169,70 +174,69 @@ class CanTx(Node):
         canRawMsg.arbitration_id = header
         try: 
             match msg.command_id:
-                case ServoCommands.STOP.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+              case ServoCommands.STOP.value:
+                canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                     
-                case ServoCommands.PING.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+              case ServoCommands.PING.value:
+                canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
                     
-                case ServoCommands.SET_ANGLE.value:
-                    angle = int(np.ceil(msg.angle*self.float_multiplier))
-                    canRawMsg.data = [msg.command_id,msg.servo_id,((angle >> 24) & 255),((angle >> 16) & 255 ),((angle >> 8) & 255),(angle & 255),0,0,0,0,0]
+              case ServoCommands.SET_ANGLE.value:
+                byte_array = float_to_bytes(msg.angle)
+                canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
                     
-                case ServoCommands.GET_ANGLE.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                    
-                case ServoCommands.GET_ANGLE_ACK.value:
-                    angle = int(np.ceil(msg.angle*self.float_multiplier))
-                    canRawMsg.data = [msg.command_id,msg.servo_id,((angle >> 24) & 255),((angle >> 16) & 255 ),((angle >> 8) & 255),(angle & 255),0,0]
-                
-                case ServoCommands.SET_SPEED.value:
-                    speed = int(np.ceil(msg.speed*self.float_multiplier))
-                    canRawMsg.data = [msg.command_id,msg.servo_id,((speed >> 24) & 255),((speed >> 16) & 255 ),((speed >> 8) & 255),(speed & 255),0,0]
-                
-                case ServoCommands.GET_SPEED.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-                case ServoCommands.GET_SPEED_ACK.value:
-                    speed = int(np.ceil(msg.speed*self.float_multiplier))
-                    canRawMsg.data = [msg.command_id,msg.servo_id,((speed >> 24) & 255),((speed >> 16) & 255 ),((speed >> 8) & 255),(speed & 255),0,0]
-                
-                case ServoCommands.SET_SPIN_DURATION.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,((msg.duration >> 8) & 255),(msg.duration & 255),0,0,0,0]
-                
-                case ServoCommands.CHANGE_MODE.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
-                
-                case ServoCommands.GET_MODE.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
-                
-                case ServoCommands.SET_TORQUE.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,msg.torque,0,0,0,0,0]
-                
-                case ServoCommands.GET_TORQUE.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-                case ServoCommands.REBOOT.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-                case ServoCommands.CLEAR_ERROR.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-                case ServoCommands.GET_ERROR.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-                case ServoCommands.GET_STATUS.value:
-                    canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
-                
-                case ServoCommands.GRAB.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-                
-                case ServoCommands.RELEASE.value:
-                    canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
-                
-                case _ :
-                    pass
-        
+              case ServoCommands.GET_ANGLE.value:
+                canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_ANGLE_ACK.value:
+                  byte_array = float_to_bytes(msg.angle)
+                  canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+
+              case ServoCommands.SET_SPEED.value:
+                  byte_array = float_to_bytes(msg.speed)
+                  canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+
+              case ServoCommands.GET_SPEED.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_SPEED_ACK.value:
+                  byte_array = float_to_bytes(msg.speed)
+                  canRawMsg.data = [msg.command_id,msg.servo_id,byte_array[3],byte_array[2],byte_array[1],byte_array[0],0,0]
+
+              case ServoCommands.SET_SPIN_DURATION.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,((msg.duration >> 8) & 255),(msg.duration & 255),0,0,0,0]
+
+              case ServoCommands.CHANGE_MODE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
+
+              case ServoCommands.GET_MODE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,msg.mode,0,0,0,0,0]
+
+              case ServoCommands.SET_TORQUE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,msg.torque,0,0,0,0,0]
+
+              case ServoCommands.GET_TORQUE.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.REBOOT.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.CLEAR_ERROR.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_ERROR.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GET_STATUS.value:
+                  canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
+
+              case ServoCommands.GRAB.value | ServoCommands.RELEASE.value | ServoCommands.HOME_POSITION.value | ServoCommands.READY_POSITION.value | ServoCommands.STORE_POT.value | ServoCommands.UNLOAD_POT.value:
+                  canRawMsg.data = [msg.command_id, 0, 0, 0, 0, 0, 0, 0]
+
+
+             case _ :
+                   pass
+            canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
+            
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
             pass
@@ -243,9 +247,7 @@ class CanTx(Node):
 
         self.can_raw_tx_publisher.publish(canRawMsg)
             
-    
-        
-    
+      
 
 def main(args=None):
     rclpy.init(args=args) #Initialise ROS2 communications

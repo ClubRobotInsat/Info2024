@@ -73,6 +73,13 @@ def generate_launch_description():
         executable='control_can.py',
         output='screen'
     )
+
+    arm_controller = Node(
+        package='arm_controller',
+        executable='arm_controller_server',
+        output='screen'
+    )
+
     delayed_controller_manager = TimerAction(period=0.5, actions=[controller_manager])
 
     my_robot_control = IncludeLaunchDescription(
@@ -105,6 +112,8 @@ def generate_launch_description():
             on_start=[joint_state_broadcaster],
         )
     )
+
+    
 
     # Launch them all!
     return LaunchDescription([

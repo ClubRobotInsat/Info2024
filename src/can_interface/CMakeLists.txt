@@ -14,9 +14,11 @@ find_package(rosidl_default_generators REQUIRED)
 set(msg_files
         "msg/CanRaw.msg"
         "msg/ArmFeedback.msg"
+        "msg/Tirette.msg"
         "msg/ServoCmd.msg"
         "msg/MotorCmd.msg"
-       "msg/SensorCmd.msg"
+        "msg/SensorCmd.msg"
+        "msg/Enemy.msg"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
