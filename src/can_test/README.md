@@ -10,7 +10,7 @@ ps aux | grep -ie ros2 | awk '{print $2}' | xargs kill -9
 
 ros2 run can_robot can_tx
 ros2 topic echo /can_raw_tx > test_output.txt
-ros2 run can_test can_tx_validation --ros-args -p file_name:=/home/pi/ros2_ws/src/can_test/test/test_can_tx.yaml
+ros2 run can_test can_tx_validation --ros-args -p file_name:=/<ROS_WS>/src/can_test/test/test_can_tx.yaml
 
 Il faut s'assurer de temporiser les envois , sinon ça sature et mène à des comportements indéterminés 
 

@@ -41,8 +41,13 @@ class ServoCommands(Enum):
     RELEASE = 18
     HOME_POSITION = 19
     READY_POSITION = 20
-    STORE_POT = 21
-    UNLOAD_POT = 22
+    FIND_OBJECT_LOW = 21
+    FIND_OBJECT_HIGH = 22
+    STORE_POT = 23
+    UNLOAD_POT = 24
+    PLACE_OBJECT = 25
+    NEXT_RING = 26
+    PREVIOUS_RING = 27
 
 class SensorCommands(Enum):
     STOP = 0
@@ -229,12 +234,11 @@ class CanTx(Node):
               case ServoCommands.GET_STATUS.value:
                   canRawMsg.data = [msg.command_id,msg.servo_id,0,0,0,0,0,0]
 
-              case ServoCommands.GRAB.value | ServoCommands.RELEASE.value | ServoCommands.HOME_POSITION.value | ServoCommands.READY_POSITION.value | ServoCommands.STORE_POT.value | ServoCommands.UNLOAD_POT.value:
+              case ServoCommands.PREVIOUS_RING.value | ServoCommands.NEXT_RING.value | ServoCommands.PLACE_OBJECT.value | ServoCommands.FIND_OBJECT_HIGH.value | ServoCommands.FIND_OBJECT_LOW.value | ServoCommands.GRAB.value | ServoCommands.RELEASE.value | ServoCommands.HOME_POSITION.value | ServoCommands.READY_POSITION.value | ServoCommands.STORE_POT.value | ServoCommands.UNLOAD_POT.value:
                   canRawMsg.data = [msg.command_id, 0, 0, 0, 0, 0, 0, 0]
-
+                  
               case _ :
                 pass
-            canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
             
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
