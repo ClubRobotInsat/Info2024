@@ -21,7 +21,7 @@ class EnemyDetection(Node):
         # Their robot
         self.enemy_radius = 0.4
 
-        self.alert_detection = self.robot_minimal_detection + self.enemy_radius / 2 + 0.2
+        self.alert_detection = self.robot_minimal_detection + self.enemy_radius / 2 + 0.05
 
         self.enemy_publisher = self.create_publisher(Enemy, 'enemy', 10)
 
