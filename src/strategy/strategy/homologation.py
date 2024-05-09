@@ -46,7 +46,7 @@ class Homologation(Node):
             # (0.0, 0.15, 0.5),
             (0.0, 0.30, 1.5),  # Go front 80cm
             (0.0, 0.0, 0.2),  # stop
-            (0.30, 0.0, 5.5),  # Go right 90cm
+            (-0.30, 0.0, 5.5),  # Go right 90cm
             # Move arm and chain
             # (0.0, 0.0, 0.5),
 
