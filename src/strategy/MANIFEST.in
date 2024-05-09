@@ -1,1 +1,2 @@
 include strategy/homologation.py
+include strategy/test_rotation.py
