@@ -25,8 +25,8 @@ class Commander(Node):
 
         self.vel_msg = Twist()
         self.threshold = 0.08
-        self.linear_vel = 1.0 # m/s # Goal: 0.4m/s, going 0.9m/s
-        self.omega = 1.0 # rad/s
+        self.linear_vel = 1.0 * 4.0 / 9.0 * 0.1 # m/s # Goal: 0.4m/s, going 0.9m/s
+        self.omega = 1.0 * 4.0 / 9.0 * 0.1 # rad/s
 
         self.timer = self.create_timer(timer_period, self.timer_callback)
 

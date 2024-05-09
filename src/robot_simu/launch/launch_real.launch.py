@@ -113,20 +113,27 @@ def generate_launch_description():
         )
     )
 
+    enemy = Node(
+        package='enemy_detection',
+        executable='enemy_detection',
+        output='screen'
+    )
+
     
 
     # Launch them all!
     return LaunchDescription([
         rsp,
-        # can_rx_raw,
+        can_rx_raw,
         can_rx,
         can_tx,
-        # can_tx_raw,
+        can_tx_raw,
         urg_node,
         controller_to_can,
         delayed_controller_manager,
         my_robot_control,
         delayed_joint_state_broadcaster,
-        delayed_forward_position_controller
+        delayed_forward_position_controller,
+        enemy
     ])
 
