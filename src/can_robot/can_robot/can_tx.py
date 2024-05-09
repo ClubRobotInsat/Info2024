@@ -232,9 +232,8 @@ class CanTx(Node):
               case ServoCommands.GRAB.value | ServoCommands.RELEASE.value | ServoCommands.HOME_POSITION.value | ServoCommands.READY_POSITION.value | ServoCommands.STORE_POT.value | ServoCommands.UNLOAD_POT.value:
                   canRawMsg.data = [msg.command_id, 0, 0, 0, 0, 0, 0, 0]
 
-
-             case _ :
-                   pass
+              case _ :
+                pass
             canRawMsg.data = [msg.command_id,0,0,0,0,0,0,0]
             
         except Exception as err:

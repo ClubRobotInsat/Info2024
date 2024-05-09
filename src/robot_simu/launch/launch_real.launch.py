@@ -30,11 +30,24 @@ def generate_launch_description():
 
     controller_params_file = os.path.join(robot_simu_dir, 'config', 'controllers.yaml')
 
+    # Lidar
+    # Get the launch directory of urg_node2
+    urg_node_dir = get_package_share_directory('urg_node2')
+    urg_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(urg_node_dir, 'launch', 'urg_node2.launch.py')])
+    )
+
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[{'robot_description': robot_description},
                     controller_params_file],
+    )
+
+    can_rx_raw = Node(
+        package='can_robot',
+        executable='can_raw_rx',
+        output='screen'
     )
 
     can_rx = Node(
@@ -55,7 +68,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    contoller_to_can = Node(
+    controller_to_can = Node(
         package='my_robot_control',
         executable='control_can.py',
         output='screen'
@@ -105,10 +118,12 @@ def generate_launch_description():
     # Launch them all!
     return LaunchDescription([
         rsp,
-        # can_rx,
+        # can_rx_raw,
+        can_rx,
         can_tx,
-        can_tx_raw,
-        contoller_to_can,
+        # can_tx_raw,
+        urg_node,
+        controller_to_can,
         delayed_controller_manager,
         my_robot_control,
         delayed_joint_state_broadcaster,
