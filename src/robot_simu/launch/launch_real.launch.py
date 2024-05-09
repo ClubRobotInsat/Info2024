@@ -68,7 +68,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    contoller_to_can = Node(
+    controller_to_can = Node(
         package='my_robot_control',
         executable='control_can.py',
         output='screen'
@@ -118,12 +118,12 @@ def generate_launch_description():
     # Launch them all!
     return LaunchDescription([
         rsp,
-        can_rx_raw,
+        # can_rx_raw,
         can_rx,
         can_tx,
-        can_tx_raw,
+        # can_tx_raw,
         urg_node,
-        contoller_to_can,
+        controller_to_can,
         delayed_controller_manager,
         my_robot_control,
         delayed_joint_state_broadcaster,

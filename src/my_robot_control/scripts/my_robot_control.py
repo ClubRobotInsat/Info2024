@@ -4,6 +4,7 @@ import rclpy
 from rclpy.node import Node
 import math
 from std_msgs.msg import Float64MultiArray
+from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 import threading
 import numpy as np
@@ -16,7 +17,7 @@ class Commander(Node):
         super().__init__('commander')
         self.wheel_vel = np.array([0,0,0,0], float)
         self.publisher_ = self.create_publisher(Float64MultiArray, '/forward_velocity_controller/commands', 10)
-
+        self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
         timer_period = 0.005
         # self.L = 0.1241 # SIMU distance from the robot center to wheel
         self.L = 0.135 # REAL distance from the robot center to wheel
@@ -24,10 +25,15 @@ class Commander(Node):
 
         self.vel_msg = Twist()
         self.threshold = 0.08
-        self.linear_vel = 0.066 * 0.1
-        self.omega = 1.0 / 30.0 / 1.16 * 0.1
+        self.linear_vel = 1.0 # m/s # Goal: 0.4m/s, going 0.9m/s
+        self.omega = 1.0 # rad/s
 
         self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        self.prev_time = self.get_clock().now()
+        self.x = 0.0
+        self.y = 0.0
+        self.theta = 0.0
 
     def timer_callback(self):
         global axes
@@ -52,6 +58,13 @@ class Commander(Node):
         array_forPublish = Float64MultiArray(data=self.wheel_vel)
         # rclpy.logging._root_logger.info(f"wheel vel : {self.wheel_vel}")
         self.publisher_.publish(array_forPublish)
+
+        # Compute odometry
+        current_time = self.get_clock().now()
+        dt = (current_time - self.prev_time).nanoseconds / 1e9 # in seconds
+
+
+
 
 class CmdVel_subscriber(Node):
     def __init__(self):

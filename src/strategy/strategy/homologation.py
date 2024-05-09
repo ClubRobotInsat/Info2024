@@ -7,6 +7,9 @@ from geometry_msgs.msg import Twist
 import math
 from time import sleep
 from std_msgs.msg import Bool
+from can_interface.msg import ArmFeedback, Tirette
+from sensor_msgs.msg import JointState
+
 
 class Homologation(Node):
     '''
@@ -21,25 +24,54 @@ class Homologation(Node):
 
     - If enemy is detected, stop the robot
     '''
+
     def __init__(self):
         super().__init__('homologation')
         self.get_logger().info('Homologation node has been started')
 
         # Make a publisher for /cmd_vel
         self.vel_publisher = self.create_publisher(Twist, 'cmd_vel', 10)
-        # Create subscription to boolean /start
-        # Change this to the topic of LA TIRETTE
-        self.start_subscriber = self.create_subscription(Bool, 'start', self.start_callback, 10)
 
-        self.get_logger().info('Homologation node has been started')
+        self.tirette_subscriber = self.create_subscription(Tirette, 'tirette', self.start_callback, 10)
+        self.motor_subscriber = self.create_subscription(JointState, 'motors_feedback', self.motor_callback, 10)
+
+        self.get_logger().info('Homologation node initialized')
+
+        self.move_timer = None
+
+    def general(self):
+        # Move forward
+        self.move(speed=0.40, duration=10.0)
+
+
     def start_callback(self, msg):
         self.get_logger().info('Start message received')
-        if msg.data:
+        if msg.go:
             self.get_logger().info('Start message is True')
-            self.stop()
+            self.general()
         else:
             self.get_logger().info('Start message is False -> Stop the robot')
             self.stop()
+
+    def move_timer_callback(self):
+        self.stop()
+        if self.move_timer is not None:
+            self.move_timer.destroy()
+
+    def move(self, speed=0.10, duration=1.0):
+        # Move the robot
+        twist = Twist()
+        twist.linear.x = speed
+        twist.linear.y = 0.0
+        twist.angular.z = 0.0
+        self.vel_publisher.publish(twist)
+        self.get_logger().info('Robot should be moving')
+
+        self.move_timer = self.create_timer(duration, self.move_timer_callback)
+
+
+    def motor_callback(self,msg):
+        pass
 
     def stop(self):
         # Stop the robot
