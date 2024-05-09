@@ -43,17 +43,17 @@ class Homologation(Node):
 
         self.sequence_index = 0
         self.instructions = [
-            (0.0, 0.15, 0.5),
-            (0.0, 0.30, 2.0),  # Go front 80cm
+            # (0.0, 0.15, 0.5),
+            (0.0, 0.30, 1.5),  # Go front 80cm
             (0.0, 0.0, 0.2),  # stop
-            (0.30, 0.0, 3.0),  # Go right 90cm
+            (0.30, 0.0, 5.5),  # Go right 90cm
             # Move arm and chain
-            (0.0, 0.0, 0.5),
+            # (0.0, 0.0, 0.5),
 
             # Go to final area
-            (0.30, 0.0, 3.0),
+            # (0.30, 0.0, 3.0),
             (0.0, 0.0, 0.2),
-            (0.0, -0.3, 2.0)
+            (0.0, -0.30, 1.5)
         ]
 
     def execute_next_instruction(self):
