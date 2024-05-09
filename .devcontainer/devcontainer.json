@@ -32,7 +32,8 @@
     "-p2222:22",
     "-p9090:9090",
     "-e", "DISPLAY=${env:DISPLAY}",
-    "--device=/dev/ttyUSB0"
+    "--device=/dev/ttyUSB0",
+    "--network=host",
   ],
   "mounts": [
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",

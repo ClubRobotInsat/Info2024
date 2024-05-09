@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'strategy = strategy.strategy:main',
             'homologation = strategy.homologation:main',
+            'test_rotation = strategy.test_rotation:main',
         ],
     },
 )
