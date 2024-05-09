@@ -130,6 +130,7 @@ def generate_launch_description():
         can_tx_raw,
         urg_node,
         controller_to_can,
+        arm_controller,
         delayed_controller_manager,
         my_robot_control,
         delayed_joint_state_broadcaster,

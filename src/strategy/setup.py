@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'strategy = strategy.strategy:main',
             'homologation = strategy.homologation:main',
+            'homologation_bras = strategy.homologation_bras:main',
         ],
     },
 )
