@@ -62,9 +62,28 @@ class Commander(Node):
         # Compute odometry
         current_time = self.get_clock().now()
         dt = (current_time - self.prev_time).nanoseconds / 1e9 # in seconds
+        self.prev_time = current_time
 
+        linear_vel = (self.wheel_vel[0] + self.wheel_vel[1] + self.wheel_vel[2] + self.wheel_vel[3]) / 4.0
+        angular_vel = (self.wheel_vel[0] - self.wheel_vel[1] - self.wheel_vel[2] + self.wheel_vel[3]) / (4.0 * self.L)
 
+        delta_theta = angular_vel * dt
+        self.theta += delta_theta
 
+        # Integrate linear and angular velocities to compute new position
+        self.x += linear_vel * np.cos(self.theta) * dt
+        self.y += linear_vel * np.sin(self.theta) * dt
+
+        # Publish odometry message
+        odom_msg = Odometry()
+        odom_msg.header.stamp = self.get_clock().now().to_msg()
+        odom_msg.header.frame_id = 'odom'
+        odom_msg.child_frame_id = 'base_link'
+        odom_msg.pose.pose.position.x = self.x
+        odom_msg.pose.pose.position.y = self.y
+        odom_msg.pose.pose.orientation.z = np.sin(self.theta / 2)
+        odom_msg.pose.pose.orientation.w = np.cos(self.theta / 2)
+        self.odom_pub.publish(odom_msg)
 
 class CmdVel_subscriber(Node):
     def __init__(self):
