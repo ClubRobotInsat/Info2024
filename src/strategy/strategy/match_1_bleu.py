@@ -44,16 +44,16 @@ class MatchBleu(Node):
         self.sequence_index = 0
         self.instructions = [
             # (0.0, 0.15, 0.5),
-            (0.0, 0.30, 1.75),  # Go front 52.5 cm
+            (0.0, 0.30, 2.0),  # Go front 60 cm
             (0.0, 0.0, 0.2),    # STOP
-            (-0.30, 0.0, 5.5),  # Go left 165 cm
+            (-0.30, 0.0, 5.2),  # Go left 156 cm
             # Move arm and chain
             # (0.0, 0.0, 0.5),
 
             # Go to final area
             # (0.30, 0.0, 3.0),
             (0.0, 0.0, 0.2),    # STOP
-            (0.0, -0.30, 1.75)  # GO BACK 52.5 cm
+            (0.0, -0.30, 2.0)  # GO BACK 60 cm
         ]
 
     def execute_next_instruction(self):

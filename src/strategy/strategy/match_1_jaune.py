@@ -46,7 +46,7 @@ class MatchJaune(Node):
             # (0.0, 0.15, 0.5),
             (0.0, 0.30, 1.75),  # Go front 52.5 cm
             (0.0, 0.0, 0.2),    # STOP
-            (-0.30, 0.0, 5.5),  # Go left 165 cm
+            (-0.30, 0.0, 5.0),  # Go left 165 cm
             # Move arm and chain
             # (0.0, 0.0, 0.5),
 
@@ -60,8 +60,9 @@ class MatchJaune(Node):
             # Go forward
             # Go a bit onto the right
             # Go backward
-            (-0.20,0.0,1.0), # Left to the wall
-            (0.20,0.0, 0.2), # Bit right
+            (-0.20,0.0, 1.0), # Left to the wall
+            (0.0, 0.0, 0.2),    # STOP SHOULD BE AT THE CORNER
+            (0.30, 0.30, 0.4), # Diagonal to leave the corner
             (0.0, 0.20, 4.0), # Forward to swap solar panels
             (0.30, 0.0, 0.2), # A bit to the right
             (0.0, -0.30, 2.5),
