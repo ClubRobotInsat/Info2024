@@ -61,22 +61,22 @@ class Homologation_Bras(Node):
         # 3st parameter -> BR: vel_y    Arm: Not used
         self.instructions = [
             # (0.0, 0.15, 0.5),
-            (0,0.0, 0.30, 1.5),  # GO FRONT     45cm
-            (0,0.0, 0.0, 0.2),   # STOP
-            (0,0.30, 0.0, 2.0),  # GO RIGHT     60cm
+            # (0,0.0, 0.30, 1.5),  # GO FRONT     45cm
+            # (0,0.0, 0.0, 0.2),   # STOP
+            # (0,0.30, 0.0, 2.0),  # GO RIGHT     60cm
             # Move arm and chain
-            (0,0.0, 0.0, 0.5),  # STOP
+            # (0,0.0, 0.0, 0.5),  # STOP
 
             # Mouvement bras
             (1, 4), # Move to ready position (after init, ready to do actions, e.g: solar panel)
             # (1, 5), # Move to Find object low position
             # (1, 1), # Grab
             # Go to final area
-            (0,0.30, 0.0, 3.5), # GO RIGHT      105cm
+            # (0,0.30, 0.0, 3.5), # GO RIGHT      105cm
 
             # (0.30, 0.0, 3.0),
-            (0,0.0, 0.0, 0.2),  # STOP
-            (0,0.0, -0.30, 1.5) # GO BACKWARD   45 cm
+            # (0,0.0, 0.0, 0.2),  # STOP
+            # (0,0.0, -0.30, 1.5) # GO BACKWARD   45 cm
         ]
 
     def execute_next_instruction(self):
