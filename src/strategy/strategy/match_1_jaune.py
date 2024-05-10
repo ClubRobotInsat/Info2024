@@ -11,7 +11,7 @@ from can_interface.msg import ArmFeedback, Tirette, Enemy
 from sensor_msgs.msg import JointState
 
 
-class MatchBleu(Node):
+class MatchJaune(Node):
     '''
     This class is the node for the homologation.
 
@@ -53,7 +53,18 @@ class MatchBleu(Node):
             # Go to final area
             # (0.30, 0.0, 3.0),
             (0.0, 0.0, 0.2),    # STOP
-            (0.0, -0.30, 1.75)  # GO BACK 52.5 cm
+            (0.0, -0.30, 1.75),  # GO BACK 52.5 cm
+
+            # Go the the wall on the left
+            # Then move a bit onto the right
+            # Go forward
+            # Go a bit onto the right
+            # Go backward
+            (-0.20,0.0,1.0), # Left to the wall
+            (0.20,0.0, 0.2), # Bit right
+            (0.0, 0.20, 4.0), # Forward to swap solar panels
+            (0.30, 0.0, 0.2), # A bit to the right
+            (0.0, -0.30, 2.5),
         ]
 
     def execute_next_instruction(self):
@@ -119,7 +130,7 @@ class MatchBleu(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = MatchBleu()
+    node = MatchJaune()
 
     rclpy.spin(node)
 

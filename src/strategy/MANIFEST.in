@@ -1,3 +1,4 @@
 include strategy/homologation.py
 include strategy/test_rotation.py
 include strategy/match_1_bleu.py
+include strategy/match_1_jaune.py

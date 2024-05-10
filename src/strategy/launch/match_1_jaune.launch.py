@@ -23,15 +23,15 @@ def generate_launch_description():
     )
 
     # Start homologation node
-    match_bleu = Node(
+    match_jaune = Node(
         package='strategy',
-        executable='match_1_bleu',
-        name='match_1_bleu',
+        executable='match_1_jaune',
+        name='match_1_jaune',
         output='screen'
     )
 
     return LaunchDescription([
         launch_real,
-        match_bleu
+        match_jaune
     ])
 
