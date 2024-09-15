@@ -33,6 +33,7 @@
     "-p9090:9090",
     "-e", "DISPLAY=${env:DISPLAY}",
     "--device=/dev/ttyUSB0",
+    "--device=/dev/rfcomm0",
     "--network=host",
   ],
   "mounts": [
