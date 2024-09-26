@@ -35,6 +35,7 @@
     "--device=/dev/ttyUSB0",
     "--device=/dev/rfcomm0",
     "--network=host",
+    "--name=cr-ros2-dev",
   ],
   "mounts": [
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
@@ -43,6 +44,6 @@
 //    "source=${localWorkspaceFolder}/../cache/ROS_DISTRO/install,target=/home/ws/install,type=bind",
 //    "source=${localWorkspaceFolder}/../cache/ROS_DISTRO/log,target=/home/ws/log,type=bind"
   ],
-  "postCreateCommand": "sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) /home/pi/ros2_ws",
+  "postCreateCommand": "sudo apt update && sudo apt install -y && sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) /home/pi/ros2_ws",
   "postStartCommand": "sudo service ssh restart"
 }
