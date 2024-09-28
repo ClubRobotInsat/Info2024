@@ -28,6 +28,8 @@ setup(
             'strategy = strategy.strategy:main',
             'homologation = strategy.homologation:main',
             'test_rotation = strategy.test_rotation:main',
+            'match_1_bleu = strategy.match_1_bleu:main',
+            'match_1_jaune= strategy.match_1_jaune:main'
         ],
     },
 )
